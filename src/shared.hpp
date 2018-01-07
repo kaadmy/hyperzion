@@ -6,4 +6,4 @@
 #include <cstring> // String handling
 #include <iostream> // Printing
 
-#include "config.hxx"
+#include "config.h"

@@ -25,13 +25,30 @@ set(CONFIG_VERSION_MINOR 1)
 set(CONFIG_VERSION_PATCH 0)
 
 configure_file(
-  "${hyperzion_SOURCE_DIR}/src/config.hxx.in"
-  "${hyperzion_SOURCE_DIR}/src/config.hxx")
+  "${hyperzion_SOURCE_DIR}/src/config.h.in"
+  "${hyperzion_SOURCE_DIR}/src/config.h")
+
+# Load PkgConfig
+
+find_package(PkgConfig REQUIRED)
 
 # Local shared includes
 
+set(SHARED_LIBRARIES
+  m # Math
+  dl # DLopen
+  )
+
 include_directories(src) # So files in src/ can be found when #including
+
+# Renderer
+
+add_subdirectory(src/renderer)
 
 # Game
 
 add_subdirectory(src/game)
+
+# Main
+
+add_subdirectory(src/main)

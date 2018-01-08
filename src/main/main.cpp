@@ -17,7 +17,11 @@ int main(int argc, char **argv) {
     std::exit(1);
   }
 
-  // Initialize all singletons
+  // Initialize some singletons
+
+  MCommon::Filesystem *filesystem = MCommon::Filesystem::getInstance();
+
+  filesystem->init(argv[0]);
 
   MClient::Client *client = MClient::Client::getInstance();
 

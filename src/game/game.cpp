@@ -16,10 +16,10 @@ Game::Game() {
 
   MCommon::File *file = new File();
 
-  file->open("shaders/default.vs", "r");
+  file->openRead("shaders/default.vs");
   test_program->bindShader(GL_VERTEX_SHADER, file->read());
 
-  file->open("shaders/default.fs", "r");
+  file->openRead("shaders/default.fs");
   test_program->bindShader(GL_FRAGMENT_SHADER, file->read());
 
   delete file;

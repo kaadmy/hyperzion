@@ -1,19 +1,32 @@
 
 #pragma once
 
+#include "filesystem.hpp"
 #include "shared.hpp"
 #include <physfs.h>
 
 namespace MCommon {
   class File {
   private:
+    Filesystem *filesystem;
+
     bool is_open;
+
+    PHYSFS_File *handle;
+
+    char *data;
+
+    void _open();
   public:
     File();
     ~File();
 
-    void open(const char *name, const char *mode = "r");
+    void openRead(const char *name);
+    void openWrite(const char *name);
+    void openAppend(const char *name);
     void close();
+
+    void freeData();
 
     const char *read();
   };

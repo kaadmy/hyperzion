@@ -49,6 +49,10 @@ add_subdirectory(src/renderer)
 
 add_subdirectory(src/game)
 
+# Client
+
+add_subdirectory(src/client)
+
 # Main
 
 add_subdirectory(src/main)

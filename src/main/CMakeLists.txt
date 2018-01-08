@@ -15,4 +15,4 @@ add_executable(${CONFIG_GAME_NAME}
 
 target_link_libraries(${CONFIG_GAME_NAME}
   ${SHARED_LIBRARIES}
-  renderer)
+  client)

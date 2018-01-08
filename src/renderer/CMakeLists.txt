@@ -7,6 +7,7 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 # Source files
 
 set(RENDERER_SOURCES
+  glad.cpp
   program.cpp
   renderer.cpp
   vbo.cpp)

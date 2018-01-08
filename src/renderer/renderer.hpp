@@ -7,11 +7,10 @@
 namespace MRenderer {
   class Renderer { // Singleton
   private:
-    static Renderer *singleton;
-  public:
     Renderer();
+  public:
     ~Renderer();
 
-    Renderer *getInstance();
+    static Renderer *getInstance();
   };
 }

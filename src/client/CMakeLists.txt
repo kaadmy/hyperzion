@@ -16,6 +16,6 @@ add_library(client
 
 target_link_libraries(client
   ${SHARED_LIBRARIES}
-  ${GLFW_LIBRARIES}
+  ${GLFW_STATIC_LIBRARIES}
   game
   renderer)

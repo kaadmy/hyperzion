@@ -23,6 +23,8 @@ int main(int argc, char **argv) {
 
   MClient::Client *client = MClient::Client::getInstance();
 
+  client = MClient::Client::getInstance();
+
   // Run client main loop
 
   client->main();

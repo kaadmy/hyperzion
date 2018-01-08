@@ -1,5 +1,6 @@
 
 #include "renderer.hpp"
+#include <GLFW/glfw3.h> // Has to be after glad.h
 
 using namespace MRenderer; // Make this module's namespace local for convenience
 
@@ -8,10 +9,14 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 Renderer::Renderer() {
-  if (!gladLoadGL()) {
+  // Initialize GLAD
+
+  if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD, aborting." << std::endl;
     std::exit(1);
   }
+
+  // DIsplay and check OpenGL version
 
   std::cout << "OpenGL " << GLVersion.major << "." << GLVersion.minor << " loaded." << std::endl;
 
@@ -19,6 +24,8 @@ Renderer::Renderer() {
     std::cout << "OpenGL version 2.1 or greater required, aborting." << std::endl;
     std::exit(1);
   }
+
+  // OpenGL state
 }
 
 Renderer::~Renderer() {
@@ -30,4 +37,16 @@ Renderer *Renderer::getInstance() {
   static Renderer instance;
 
   return &instance;
+}
+
+// Drawing
+
+void Renderer::preDraw() {
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Renderer::draw() {
+}
+
+void Renderer::postDraw() {
 }

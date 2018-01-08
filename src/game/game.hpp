@@ -14,5 +14,7 @@ namespace MGame {
     ~Game();
 
     static Game *getInstance();
+
+    void update();
   };
 }

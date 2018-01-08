@@ -1,9 +1,4 @@
 
-# Include libraries
-
-pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_STATIC_INCLUDE_DIRS})
-
 # Source files
 
 set(CLIENT_SOURCES

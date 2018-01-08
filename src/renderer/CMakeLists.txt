@@ -1,9 +1,4 @@
 
-# Include libraries
-
-pkg_search_module(OpenGL REQUIRED gl)
-include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
-
 # Source files
 
 set(RENDERER_SOURCES
@@ -20,4 +15,5 @@ add_library(renderer
 target_link_libraries(renderer
   m # Math
   dl # DLopen
+  ${GLFW_STATIC_LIBRARIES}
   ${OpenGL_STATIC_LIBRARIES})

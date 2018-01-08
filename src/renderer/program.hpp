@@ -11,5 +11,10 @@ namespace MRenderer {
   public:
     Program();
     ~Program();
+
+    void bind();
+
+    void bindShader(GLenum type, const char *source);
+    void link();
   };
 }

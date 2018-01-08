@@ -21,3 +21,8 @@ Game *Game::getInstance() {
 
   return &instance;
 }
+
+// Update
+
+void Game::update() {
+}

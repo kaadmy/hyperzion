@@ -32,6 +32,14 @@ configure_file(
 
 find_package(PkgConfig REQUIRED)
 
+# Find and libraries
+
+pkg_search_module(GLFW REQUIRED glfw3)
+include_directories(${GLFW_STATIC_INCLUDE_DIRS})
+
+pkg_search_module(OpenGL REQUIRED gl)
+include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
+
 # Local shared includes
 
 set(SHARED_LIBRARIES

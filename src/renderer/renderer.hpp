@@ -12,5 +12,9 @@ namespace MRenderer {
     ~Renderer();
 
     static Renderer *getInstance();
+
+    void preDraw();
+    void draw();
+    void postDraw();
   };
 }

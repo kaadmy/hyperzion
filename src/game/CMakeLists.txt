@@ -11,4 +11,5 @@ add_library(game
 
 target_link_libraries(game
   ${SHARED_LIBRARIES}
+  common
   renderer)

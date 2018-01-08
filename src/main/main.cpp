@@ -3,8 +3,6 @@
 #include "shared.hpp"
 
 void shutdown(void) {
-  // Remove singletons
-
   std::cout << "Shutdown." << std::endl;
 }
 
@@ -22,8 +20,6 @@ int main(int argc, char **argv) {
   // Initialize all singletons
 
   MClient::Client *client = MClient::Client::getInstance();
-
-  client = MClient::Client::getInstance();
 
   // Run client main loop
 

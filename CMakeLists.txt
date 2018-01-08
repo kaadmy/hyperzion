@@ -40,6 +40,9 @@ include_directories(${GLFW_STATIC_INCLUDE_DIRS})
 pkg_search_module(OpenGL REQUIRED gl)
 include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
 
+pkg_search_module(PhysFS REQUIRED physfs)
+include_directories(${PhysFS_STATIC_INCLUDE_DIRS})
+
 # Local shared includes
 
 set(SHARED_LIBRARIES
@@ -49,16 +52,11 @@ set(SHARED_LIBRARIES
 
 include_directories(src) # So files in src/ can be found when #including
 
-# Renderer
+# Modules
 
+add_subdirectory(src/common)
 add_subdirectory(src/renderer)
-
-# Game
-
 add_subdirectory(src/game)
-
-# Client
-
 add_subdirectory(src/client)
 
 # Main

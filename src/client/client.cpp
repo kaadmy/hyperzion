@@ -27,6 +27,7 @@ Client::Client() {
 
   glfwMakeContextCurrent(window);
 
+  filesystem = MCommon::Filesystem::getInstance();
   game = MGame::Game::getInstance();
   renderer = MRenderer::Renderer::getInstance();
 }
@@ -56,9 +57,13 @@ void Client::main() {
   while (!exit) {
     glfwPollEvents();
 
+    game->update();
 
+    // Swap buffers and flush
 
     glfwSwapBuffers(window);
+
+    // Check for exit state
 
     exit = (exit ? exit : glfwWindowShouldClose(window));
   }

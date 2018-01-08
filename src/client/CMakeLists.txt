@@ -2,7 +2,7 @@
 # Include libraries
 
 pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_INCLUDE_DIRS})
+include_directories(${GLFW_STATIC_INCLUDE_DIRS})
 
 # Source files
 

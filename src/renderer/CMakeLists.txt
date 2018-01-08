@@ -2,7 +2,7 @@
 # Include libraries
 
 pkg_search_module(OpenGL REQUIRED gl)
-include_directories(${OpenGL_INCLUDE_DIRS})
+include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
 
 # Source files
 

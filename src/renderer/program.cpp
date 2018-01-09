@@ -9,6 +9,8 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 Program::Program() {
   index = glCreateProgram();
+
+  is_compiled = false;
 }
 
 Program::~Program() {
@@ -18,6 +20,11 @@ Program::~Program() {
 // Binding
 
 void Program::bind() {
+  if (!is_compiled) {
+    std::cout << "Program not operational, ignoring." << std::endl;
+    return;
+  }
+
   glUseProgram(index);
 }
 
@@ -41,7 +48,7 @@ void Program::bindShader(GLenum type, const char *source) {
     glGetShaderInfoLog(shader, 511, &length, &log[0]);
     log[length] = '\0';
 
-    std::cout << log << std::endl;
+    std::cout << "Failed to compile shader: " << std::endl << log << std::endl;
   }
 
   glAttachShader(index, shader); // Attach shader to program
@@ -50,6 +57,8 @@ void Program::bindShader(GLenum type, const char *source) {
 }
 
 void Program::link() {
+  is_compiled = true;
+
   glLinkProgram(index);
 
   // Check link status
@@ -61,10 +70,11 @@ void Program::link() {
   GLchar log[512];
 
   if (status == GL_FALSE) {
+    is_compiled = false;
+
     glGetProgramInfoLog(index, 511, &length, &log[0]);
     log[length] = '\0';
 
-    std::cout << log << std::endl;
+    std::cout << "Failed to link program: " << std::endl << log << std::endl;
   }
-
 }

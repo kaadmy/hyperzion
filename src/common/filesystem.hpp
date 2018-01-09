@@ -10,6 +10,9 @@ namespace MCommon {
     Filesystem();
 
     bool is_init;
+
+    char *separator;
+    uint8_t separatorlen;
   public:
     ~Filesystem();
 
@@ -18,6 +21,6 @@ namespace MCommon {
     void init(const char *name);
     void mount(const char *dir, const char *mountpoint);
 
-    bool checkError();
+    bool checkError(const char *action, const char *path);
   };
 }

@@ -16,11 +16,13 @@ Game::Game() {
 
   MCommon::File *file = new File();
 
-  file->openRead("shaders/default.vs");
+  file->openRead("data/shaders/default.vs");
   test_program->bindShader(GL_VERTEX_SHADER, file->read());
+  file->close();
 
-  file->openRead("shaders/default.fs");
+  file->openRead("data/shaders/default.fs");
   test_program->bindShader(GL_FRAGMENT_SHADER, file->read());
+  file->close();
 
   delete file;
 
@@ -45,13 +47,22 @@ Game *Game::getInstance() {
 // Update
 
 void Game::update() {
-  // Render everything
+  // Pre-render state setup
 
   renderer->preDraw();
+
+  // Update game
+
+  // ???
+
+  // 3D Rendering
 
   test_vbo->draw();
   renderer->draw();
 
-  renderer->postDraw();
+  // 2D rendering (HUD, UI)
 
+  // Post-render cleanup
+
+  renderer->postDraw();
 }

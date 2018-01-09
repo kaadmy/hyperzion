@@ -12,11 +12,13 @@ namespace MCommon {
 
     bool is_open;
 
+    char *path;
+
     PHYSFS_File *handle;
 
     char *data;
 
-    void _open();
+    void builtinOpen();
   public:
     File();
     ~File();

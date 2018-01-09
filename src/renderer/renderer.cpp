@@ -18,7 +18,9 @@ Renderer::Renderer() {
 
   // DIsplay and check OpenGL version
 
-  std::cout << "OpenGL " << GLVersion.major << "." << GLVersion.minor << " loaded." << std::endl;
+  std::cout << "OpenGL loaded:" << std::endl;
+  std::cout << "  Vendor: " << glGetString(GL_VENDOR) << std::endl;
+  std::cout << "  Version: " << glGetString(GL_VERSION) << std::endl;
 
   if (!GLAD_GL_VERSION_2_1) {
     std::cout << "OpenGL version 2.1 or greater required, aborting." << std::endl;

@@ -27,6 +27,10 @@ Filesystem *Filesystem::getInstance() {
 
 // Initializing and deinitializing
 
+static void printSearchPathCallback(void *data, const char *path) {
+  std::cout << "  " << path << std::endl;
+}
+
 void Filesystem::init(const char *name) {
   if (is_init) {
     return;
@@ -34,35 +38,44 @@ void Filesystem::init(const char *name) {
 
   is_init = true;
 
-  std::cout << "Initializing filesystem." << std::endl;
-
   PHYSFS_init(name);
 
-  PHYSFS_setSaneConfig(CONFIG_GAME_NAME, "", NULL, 0, 0);
+  PHYSFS_permitSymbolicLinks(true);
 
-  mount(PHYSFS_getBaseDir(), "/");
+  if (checkError("fsinit", "")) {
+    std::cout << "Failed to initialize filesystem, ignoring." << std::endl;
+  }
+
+  separator = (char *) PHYSFS_getDirSeparator();
+  separatorlen = strlen(separator);
+
+  PHYSFS_setSaneConfig(CONFIG_ORG_NAME, CONFIG_GAME_NAME, "zip", 0, 1);
+
+  if (checkError("fsconfig", "")) {
+    std::cout << "Failed to set filesystem config, ignoring." << std::endl;
+  }
+
+  std::cout << "Search path:" << std::endl;
+  PHYSFS_getSearchPathCallback(printSearchPathCallback, NULL);
 }
 
 // Mounting
 
 void Filesystem::mount(const char *dir, const char *mountpoint) {
   PHYSFS_mount(dir, mountpoint, 1);
+
+  if (checkError("mount", dir)) {
+    std::cout << "Failed to mount directory, ignoring." << std::endl;
+  }
 }
 
 // Error handling
 
-bool Filesystem::checkError() {
+bool Filesystem::checkError(const char *action, const char *path) {
   PHYSFS_ErrorCode code = PHYSFS_getLastErrorCode();
 
-  std::cout << "PhysFS: ";
-
-  switch (code) {
-  case PHYSFS_ERR_NOT_FOUND:
-    std::cout << "File not found" << std::endl;
-    break;
-  default:
-    std::cout << PHYSFS_getErrorByCode(code) << std::endl;
-    break;
+  if (code != PHYSFS_ERR_OK) {
+    std::cout << "PhysFS: [" << action << ":" << path << "]: " << PHYSFS_getErrorByCode(code) << std::endl;
   }
 
   return (code != PHYSFS_ERR_OK);

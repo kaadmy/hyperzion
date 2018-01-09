@@ -17,12 +17,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ${DEBUG_FLAGS}")
 
 # Generate config variables
 
+set(CONFIG_ORG_NAME "kaadmy")
+
 set(CONFIG_GAME_NAME "hyperzion")
 set(CONFIG_GAME_TITLE "Hyperzion")
 
 set(CONFIG_VERSION_MAJOR 0)
 set(CONFIG_VERSION_MINOR 1)
 set(CONFIG_VERSION_PATCH 0)
+
+set(CONFIG_PATH_DATA "data")
 
 configure_file(
   "${hyperzion_SOURCE_DIR}/src/config.h.in"

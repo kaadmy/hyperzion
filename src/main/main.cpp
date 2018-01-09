@@ -1,6 +1,7 @@
 
 #include "client/client.hpp"
 #include "shared.hpp"
+#include "revision.h"
 
 void shutdown(void) {
   std::cout << "Shutdown." << std::endl;
@@ -9,8 +10,7 @@ void shutdown(void) {
 #define CHECKERR(msg) printf("PhysFS [%s]: %s\n", msg, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()))
 
 int main(int argc, char **argv) {
-  std::cout << CONFIG_GAME_TITLE << " v" << CONFIG_VERSION_MAJOR << "." << \
-    CONFIG_VERSION_MINOR << "." << CONFIG_VERSION_PATCH << std::endl;
+  std::cout << CONFIG_GAME_TITLE << " version " << CONFIG_VERSION_STRING << "-" << GIT_REVISION<< std::endl;
 
   // Assign atexit handler
 

@@ -26,6 +26,8 @@ set(CONFIG_VERSION_MAJOR 0)
 set(CONFIG_VERSION_MINOR 1)
 set(CONFIG_VERSION_PATCH 0)
 
+set(CONFIG_VERSION_STRING "${CONFIG_VERSION_MAJOR}.${CONFIG_VERSION_MINOR}.${CONFIG_VERSION_PATCH}")
+
 set(CONFIG_PATH_DATA "data")
 
 configure_file(
@@ -38,11 +40,11 @@ find_package(PkgConfig REQUIRED)
 
 # Find and libraries
 
-pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_STATIC_INCLUDE_DIRS})
-
 pkg_search_module(OpenGL REQUIRED gl)
 include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
+
+pkg_search_module(GLFW REQUIRED glfw3)
+include_directories(${GLFW_STATIC_INCLUDE_DIRS})
 
 pkg_search_module(PhysFS REQUIRED physfs)
 include_directories(${PhysFS_STATIC_INCLUDE_DIRS})
@@ -54,15 +56,6 @@ set(SHARED_LIBRARIES
   dl # DLopen
   )
 
-include_directories(src) # So files in src/ can be found when #including
+# Source
 
-# Modules
-
-add_subdirectory(src/common)
-add_subdirectory(src/renderer)
-add_subdirectory(src/game)
-add_subdirectory(src/client)
-
-# Main
-
-add_subdirectory(src/main)
+add_subdirectory(src)

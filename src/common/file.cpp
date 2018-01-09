@@ -3,8 +3,6 @@
 
 using namespace MCommon; // Make this module's namespace local for convenience
 
-static const size_t FILE_CHUNK_SIZE = 1024;
-
 /* class File */
 
 // Constructor/destructor
@@ -16,7 +14,8 @@ File::File() {
 
   handle = NULL;
 
-  data = NULL;
+  filelength = 0;
+  filedata = NULL;
 }
 
 File::~File() {
@@ -26,30 +25,35 @@ File::~File() {
 // Open/close
 
 void File::openRead(const char *_path) {
-  handle = PHYSFS_openRead(_path);
-
   path = strdup(_path);
+
+  std::cout << "Opening " << path << " for reading." << std::endl;
+
+  handle = PHYSFS_openRead(path);
+
   builtinOpen();
 }
 
 void File::openWrite(const char *_path) {
-  handle = PHYSFS_openWrite(_path);
-
   path = strdup(_path);
+
+  handle = PHYSFS_openWrite(path);
+
   builtinOpen();
 }
 
 void File::openAppend(const char *_path) {
-  handle = PHYSFS_openAppend(_path);
-
   path = strdup(_path);
+
+  handle = PHYSFS_openAppend(path);
+
   builtinOpen();
 }
 
 void File::builtinOpen() {
   is_open = true;
 
-  if (handle == NULL || filesystem->checkError("open", path)) {
+  if (handle == NULL || !filesystem->checkError("open", path)) {
     is_open = false;
   }
 }
@@ -69,10 +73,10 @@ void File::close() {
 // Freeing unused data
 
 void File::freeData() {
-  if (data != NULL) {
-    free(data);
+  if (filedata != NULL) {
+    free(filedata);
 
-    data = NULL;
+    filedata = NULL;
   }
 }
 
@@ -85,23 +89,15 @@ const char *File::read() {
 
   freeData(); // Ensure cache is clear and force re-read
 
-  size_t size = 0;
+  filelength = PHYSFS_fileLength(handle);
+  filesystem->checkError("PHYSFS_fileLength", path);
 
-  data = (char *) malloc(size);
+  filedata = (char *) malloc(filelength);
 
-  while (!PHYSFS_eof(handle)) {
-    size += FILE_CHUNK_SIZE;
-    data = (char *) realloc(data, size);
-    size -= (FILE_CHUNK_SIZE - PHYSFS_readBytes(handle, data, FILE_CHUNK_SIZE));
-  }
+  PHYSFS_readBytes(handle, filedata, filelength);
+  filesystem->checkError("PHYSFS_readBytes", path);
 
-  data = (char *) realloc(data, size);
+  //std::cout << filedata << std::endl;
 
-  data[size] = '\0'; // Ensure there is a NUL character at the end of the file
-
-  filesystem->checkError("read", path);
-
-  std::cout << data << std::endl;
-
-  return data;
+  return filedata;
 }

@@ -16,7 +16,8 @@ namespace MCommon {
 
     PHYSFS_File *handle;
 
-    char *data;
+    PHYSFS_uint64 filelength;
+    char *filedata;
 
     void builtinOpen();
   public:

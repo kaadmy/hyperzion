@@ -27,10 +27,6 @@ Filesystem *Filesystem::getInstance() {
 
 // Initializing and deinitializing
 
-static void printSearchPathCallback(void *data, const char *path) {
-  std::cout << "  " << path << std::endl;
-}
-
 void Filesystem::init(const char *name) {
   if (is_init) {
     return;
@@ -38,35 +34,39 @@ void Filesystem::init(const char *name) {
 
   is_init = true;
 
+  // Initialize PhysFS
+
   PHYSFS_init(name);
+
+  if (!checkError("PHYSFS_init", "")) {
+    std::cout << "Failed to initialize filesystem, ignoring." << std::endl;
+  }
+
+  // Enable symlinks
 
   PHYSFS_permitSymbolicLinks(true);
 
-  if (checkError("fsinit", "")) {
-    std::cout << "Failed to initialize filesystem, ignoring." << std::endl;
-  }
+  // Get path separator
 
   separator = (char *) PHYSFS_getDirSeparator();
   separatorlen = strlen(separator);
 
-  PHYSFS_setSaneConfig(CONFIG_ORG_NAME, CONFIG_GAME_NAME, "zip", 0, 1);
+  // Load basedir and mount
 
-  if (checkError("fsconfig", "")) {
-    std::cout << "Failed to set filesystem config, ignoring." << std::endl;
+  basedir = (char *) PHYSFS_getBaseDir();
+
+  if (!mount(basedir, "/")) {
+    std::cout << "Failed to mount base dir, ignoring." << std::endl;
   }
-
-  std::cout << "Search path:" << std::endl;
-  PHYSFS_getSearchPathCallback(printSearchPathCallback, NULL);
 }
 
 // Mounting
 
-void Filesystem::mount(const char *dir, const char *mountpoint) {
-  PHYSFS_mount(dir, mountpoint, 1);
+bool Filesystem::mount(const char *dir, const char *mountpoint) {
+  std::cout << "Mounting " << dir << " to " << mountpoint << std::endl;
+  PHYSFS_mount(dir, mountpoint, 1); // Append to search path
 
-  if (checkError("mount", dir)) {
-    std::cout << "Failed to mount directory, ignoring." << std::endl;
-  }
+  return checkError("mount", dir);
 }
 
 // Error handling
@@ -78,5 +78,5 @@ bool Filesystem::checkError(const char *action, const char *path) {
     std::cout << "PhysFS: [" << action << ":" << path << "]: " << PHYSFS_getErrorByCode(code) << std::endl;
   }
 
-  return (code != PHYSFS_ERR_OK);
+  return (code == PHYSFS_ERR_OK);
 }

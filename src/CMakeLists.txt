@@ -19,7 +19,8 @@ add_subdirectory(main)
 
 add_custom_target(gitrevision ALL)
 
-# creates svnversion.h using cmake script
+# Create revision.h
+
 add_custom_command(TARGET gitrevision COMMAND ${CMAKE_COMMAND}
    -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}
-   -P ${CMAKE_CURRENT_SOURCE_DIR}/revision.cmake)
+   -P ${CMAKE_CURRENT_SOURCE_DIR}/gitrevision.cmake)

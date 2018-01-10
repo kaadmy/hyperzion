@@ -13,7 +13,6 @@ add_library(renderer
   ${RENDERER_SOURCES})
 
 target_link_libraries(renderer
-  m # Math
-  dl # DLopen
+  ${SHARED_LIBRARIES}
   ${GLFW_STATIC_LIBRARIES}
-  ${OpenGL_STATIC_LIBRARIES})
+  ${OPENGL_LIBRARIES})

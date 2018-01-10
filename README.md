@@ -11,6 +11,8 @@ You don't, haha.
 
 See file *LICENSE.txt* for more information.
 
+Third-party files in `deps/` may have differing licenses, see individual licenses for more information.
+
 ## Credits
 
 - *Person*: Did something, probably

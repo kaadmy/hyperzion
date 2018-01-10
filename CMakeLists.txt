@@ -34,26 +34,20 @@ configure_file(
   "${hyperzion_SOURCE_DIR}/src/config.h.in"
   "${hyperzion_SOURCE_DIR}/src/config.h")
 
-# Load PkgConfig
+# Find libraries (optionally bundled)
 
-find_package(PkgConfig REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
-# Find and libraries
-
-pkg_search_module(OpenGL REQUIRED gl)
-include_directories(${OpenGL_STATIC_INCLUDE_DIRS})
-
-pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_STATIC_INCLUDE_DIRS})
-
-pkg_search_module(PhysFS REQUIRED physfs)
-include_directories(${PhysFS_STATIC_INCLUDE_DIRS})
+find_package(GLFW)
+find_package(OpenGL)
+find_package(PhysFS)
 
 # Local shared includes
 
 set(SHARED_LIBRARIES
-  m # Math
-  dl # DLopen
+  m # Math library
+  dl # DLL library
+  pthread # POXIS thread library
   )
 
 # Source

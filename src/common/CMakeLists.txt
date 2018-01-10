@@ -12,4 +12,4 @@ add_library(common
 
 target_link_libraries(common
   ${SHARED_LIBRARIES}
-  ${PhysFS_STATIC_LIBRARIES})
+  ${PHYSFS_LIBRARIES})

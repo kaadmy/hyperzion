@@ -97,6 +97,8 @@ const char *File::read() {
   PHYSFS_readBytes(handle, filedata, filelength);
   filesystem->checkError("PHYSFS_readBytes", path);
 
+  filedata[filelength] = '\0'; // ?? Ensure a NUL, is this required?
+
   //std::cout << filedata << std::endl;
 
   return filedata;

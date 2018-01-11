@@ -1,0 +1,11 @@
+
+This version of PhysFS has been modified by KaadmY to accommodate for Hyperzion.
+
+Based off the official source tarball of PhysFS 3.0.1.
+
+Notable changes:
+
+- Disabled shared library build.
+- Disabled test binary build.
+- Disabled most archive types (except ZIP)
+- Cut out parts of CMakeLists.txt that seem unneeded, this may cause issues later so I'm leaving a note here. Huge success.

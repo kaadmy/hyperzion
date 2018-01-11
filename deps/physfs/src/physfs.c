@@ -486,7 +486,7 @@ static PHYSFS_Io *handleIo_duplicate(PHYSFS_Io *io)
     memcpy(retval, io, sizeof (PHYSFS_Io));
     retval->opaque = newfh;
     return retval;
-    
+
 handleIo_dupe_failed:
     if (newfh)
     {
@@ -1144,37 +1144,8 @@ static int initStaticArchivers(void)
         } \
     }
 
-    #if PHYSFS_SUPPORTS_ZIP
-        REGISTER_STATIC_ARCHIVER(ZIP);
-    #endif
-    #if PHYSFS_SUPPORTS_7Z
-        SZIP_global_init();
-        REGISTER_STATIC_ARCHIVER(7Z);
-    #endif
-    #if PHYSFS_SUPPORTS_GRP
-        REGISTER_STATIC_ARCHIVER(GRP);
-    #endif
-    #if PHYSFS_SUPPORTS_QPAK
-        REGISTER_STATIC_ARCHIVER(QPAK);
-    #endif
-    #if PHYSFS_SUPPORTS_HOG
-        REGISTER_STATIC_ARCHIVER(HOG);
-    #endif
-    #if PHYSFS_SUPPORTS_MVL
-        REGISTER_STATIC_ARCHIVER(MVL);
-    #endif
-    #if PHYSFS_SUPPORTS_WAD
-        REGISTER_STATIC_ARCHIVER(WAD);
-    #endif
-    #if PHYSFS_SUPPORTS_SLB
-        REGISTER_STATIC_ARCHIVER(SLB);
-    #endif
-    #if PHYSFS_SUPPORTS_ISO9660
-        REGISTER_STATIC_ARCHIVER(ISO9660);
-    #endif
-    #if PHYSFS_SUPPORTS_VDF
-        REGISTER_STATIC_ARCHIVER(VDF)
-    #endif
+    REGISTER_STATIC_ARCHIVER(ZIP);
+    REGISTER_STATIC_ARCHIVER(ISO9660);
 
     #undef REGISTER_STATIC_ARCHIVER
 
@@ -3299,4 +3270,3 @@ void __PHYSFS_DirTreeDeinit(__PHYSFS_DirTree *dt)
 } /* __PHYSFS_DirTreeDeinit */
 
 /* end of physfs.c ... */
-

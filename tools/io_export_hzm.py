@@ -116,7 +116,7 @@ def export_mesh(scene, obj):
     # Write materials
 
     for mat in bpy.data.materials:
-        out_materials += str(struct.pack(">B", len(mat.name)))
+        out_materials += str(struct.pack(">B", len(mat.name) + 1))
         out_materials += mat.name
 
     bpy.data.meshes.remove(mesh)
@@ -126,8 +126,6 @@ def export_mesh(scene, obj):
 
     out += out_polygons
     out += out_materials
-
-    print("out_materials: ", out_materials)
 
     return out
 

@@ -12,6 +12,8 @@ Game::Game() {
   filesystem = MCommon::Filesystem::getInstance();
   renderer = MRenderer::Renderer::getInstance();
 
+  // Create test shader program
+
   test_program = new MRenderer::Program();
 
   MCommon::File *file = new File();
@@ -27,6 +29,8 @@ Game::Game() {
   delete file;
 
   test_program->link();
+
+  // Create test VBO
 
   test_vbo = new MRenderer::VBO(test_program);
 }
@@ -53,11 +57,11 @@ void Game::update() {
 
   // Update game
 
-  // ???
+  // ??? Put game update code here
 
   // 3D Rendering
 
-  test_vbo->draw();
+  test_vbo->draw(test_program);
   renderer->draw();
 
   // 2D rendering (HUD, UI)

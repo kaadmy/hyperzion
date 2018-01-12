@@ -12,7 +12,7 @@ VBO::VBO(Program *program) {
 
   glGenBuffers(1, &index);
 
-  bind();
+  bind(program);
 
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
@@ -22,7 +22,7 @@ VBO::~VBO() {
 
 // Binding
 
-void VBO::bind() {
+void VBO::bind(Program *program) {
   program->bind();
 
   glBindBuffer(GL_ARRAY_BUFFER, index);
@@ -44,8 +44,8 @@ void VBO::bind() {
 
 // Drawing
 
-void VBO::draw() {
-  bind();
+void VBO::draw(Program *program) {
+  bind(program);
 
   glDrawArrays(GL_TRIANGLES, 0, size);
 }

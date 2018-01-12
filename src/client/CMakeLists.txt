@@ -2,7 +2,8 @@
 # Source files
 
 set(CLIENT_SOURCES
-  client.cpp)
+  client.cpp
+  event.cpp)
 
 # Setup binary
 

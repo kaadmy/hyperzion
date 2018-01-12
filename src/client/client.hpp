@@ -4,6 +4,7 @@
 #include "common/filesystem.hpp"
 #include "game/game.hpp"
 #include "renderer/renderer.hpp"
+#include "event.hpp"
 #include "shared.hpp"
 #include <GLFW/glfw3.h>
 
@@ -13,8 +14,9 @@ namespace MClient {
     Client();
 
     MCommon::Filesystem *filesystem;
-    MGame::Game *game;
     MRenderer::Renderer *renderer;
+    MGame::Game *game;
+    Event *event;
 
     bool exit;
 

@@ -16,16 +16,14 @@ namespace MRenderer {
   private:
     GLuint index;
 
-    class Program *program;
-
     GLsizei size;
     class Vertex *data;
   public:
     VBO(Program *program);
     ~VBO();
 
-    void bind();
+    void bind(Program *program);
 
-    void draw();
+    void draw(Program *program);
   };
 }

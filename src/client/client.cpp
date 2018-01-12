@@ -1,5 +1,6 @@
 
 #include "client.hpp"
+#include "event.hpp"
 
 using namespace MClient; // Make this module's namespace local for convenience
 
@@ -22,14 +23,18 @@ Client::Client() {
 
   if (window == NULL) {
     std::cout << "Failed to create window, aborting." << std::endl;
+    glfwTerminate();
     std::exit(1);
   }
 
   glfwMakeContextCurrent(window);
 
   filesystem = MCommon::Filesystem::getInstance();
-  game = MGame::Game::getInstance();
   renderer = MRenderer::Renderer::getInstance();
+  game = MGame::Game::getInstance();
+  event = Event::getInstance();
+
+  event->init(window);
 }
 
 Client::~Client() {
@@ -55,7 +60,7 @@ void Client::main() {
   exit = false; // Reset loop condition when entering the main loop
 
   while (!exit) {
-    glfwPollEvents();
+    event->update();
 
     game->update();
 

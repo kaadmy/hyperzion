@@ -3,7 +3,17 @@ cmake_minimum_required(VERSION 2.8)
 
 project(hyperzion CXX)
 
-# Options
+# Disable common warnings
+
+option(SHOW_ALL_WARNINGS "Show all warnings" OFF)
+
+if(${SHOW_ALL_WARNINGS})
+  set(WARNING_FLAGS "-Wall -Wextra")
+else()
+  set(WARNING_FLAGS "-Wall")
+endif()
+
+# Debug build
 
 option(DEBUG_BUILD "Make a debug build" ON)
 
@@ -13,7 +23,7 @@ else()
   set(DEBUG_FLAGS "-O3") # Optimization enabled
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ${DEBUG_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} ${DEBUG_FLAGS}")
 
 # Generate config variables
 

@@ -8,16 +8,28 @@ using namespace MClient; // Make this module's namespace local for convenience
 
 // Constructor/destructor
 
+static void callbackError(int status, const char *message) {
+  std::cout << message << std::endl;
+}
+
 Client::Client() {
-  glfwSetErrorCallback(glfwErrorCb);
+  std::cout << "Initializing client..." << std::endl;
+
+  // Initialize GLFW
+
+  glfwSetErrorCallback(callbackError);
 
   if (!glfwInit()) {
     std::cout << "Failed to initialize GLFW, aborting." << std::endl;
     std::exit(1);
   }
 
+  // Ask for an OpenGL 2.1 context
+
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
+  // Create window
 
   window = glfwCreateWindow(1024, 600, CONFIG_GAME_TITLE, NULL, NULL);
 
@@ -29,11 +41,13 @@ Client::Client() {
 
   glfwMakeContextCurrent(window);
 
-  filesystem = MCommon::Filesystem::getInstance();
-  renderer = MRenderer::Renderer::getInstance();
-  game = MGame::Game::getInstance();
-  event = Event::getInstance();
+  // Get singletons
 
+  filesystem = MCommon::Filesystem::getInstance();
+  game = MGame::Game::getInstance();
+  renderer = MRenderer::Renderer::getInstance();
+
+  event = Event::getInstance();
   event->init(window);
 }
 
@@ -48,10 +62,13 @@ Client *Client::getInstance() {
   return &instance;
 }
 
-// GLFW Callbacks
+// Deinit
 
-void Client::glfwErrorCb(int status, const char *message) {
-  std::cout << message << std::endl;
+void Client::deinit() {
+  std::cout << "Deinitializing client..." << std::endl;
+
+  game->deinit();
+  renderer->deinit();
 }
 
 // Main loop

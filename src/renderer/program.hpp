@@ -7,9 +7,9 @@
 namespace MRenderer {
   class Program {
   private:
-    bool is_compiled;
+    int ident;
 
-    GLuint index;
+    GLuint gl_id;
   public:
     Program();
     ~Program();

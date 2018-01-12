@@ -12,9 +12,6 @@ Filesystem::Filesystem() {
 }
 
 Filesystem::~Filesystem() {
-  is_init = false;
-
-  PHYSFS_deinit();
 }
 
 // Singleton getter
@@ -31,6 +28,8 @@ void Filesystem::init(const char *name) {
   if (is_init) {
     return;
   }
+
+  std::cout << "Initializing filesystem..." << std::endl;
 
   is_init = true;
 
@@ -58,6 +57,14 @@ void Filesystem::init(const char *name) {
   if (!mount(basedir, "/")) {
     std::cout << "Failed to mount base dir, ignoring." << std::endl;
   }
+}
+
+void Filesystem::deinit() {
+  std::cout << "Deinitializing filesystem..." << std::endl;
+
+  is_init = false;
+
+  PHYSFS_deinit();
 }
 
 // Mounting

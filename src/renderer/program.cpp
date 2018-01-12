@@ -8,17 +8,17 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 Program::Program() {
-  index = glCreateProgram();
+  gl_id = glCreateProgram();
 }
 
 Program::~Program() {
-  glDeleteProgram(index);
+  glDeleteProgram(gl_id);
 }
 
 // Binding
 
 void Program::bind() {
-  glUseProgram(index);
+  glUseProgram(gl_id);
 }
 
 // Creation
@@ -29,24 +29,24 @@ void Program::bindShader(GLenum type, const char *source) {
   glShaderSource(shader, 1, &source, NULL);
   glCompileShader(shader); // If the compile failed, linking will also give the same error log
 
-  glAttachShader(index, shader); // Attach shader to program
+  glAttachShader(gl_id, shader); // Attach shader to program
 
   glDeleteShader(shader); // Mark for deletion when program is deleted
 }
 
 void Program::link() {
-  glLinkProgram(index);
+  glLinkProgram(gl_id);
 
   // Check link status
 
   GLint status;
-  glGetProgramiv(index, GL_LINK_STATUS, &status);
+  glGetProgramiv(gl_id, GL_LINK_STATUS, &status);
 
   GLint length;
   GLchar log[512];
 
   if (status == GL_FALSE) {
-    glGetProgramInfoLog(index, 511, &length, &log[0]);
+    glGetProgramInfoLog(gl_id, 511, &length, &log[0]);
     log[length] = '\0';
 
     std::cout << "Failed to link program: " << std::endl << log << std::endl;

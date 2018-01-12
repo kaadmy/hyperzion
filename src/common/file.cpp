@@ -27,7 +27,7 @@ File::~File() {
 void File::openRead(const char *_path) {
   path = strdup(_path);
 
-  std::cout << "Opening " << path << " for reading." << std::endl;
+  std::cout << "Opening file " << path << " for reading." << std::endl;
 
   handle = PHYSFS_openRead(path);
 
@@ -37,6 +37,8 @@ void File::openRead(const char *_path) {
 void File::openWrite(const char *_path) {
   path = strdup(_path);
 
+  std::cout << "Opening file " << path << " for writing." << std::endl;
+
   handle = PHYSFS_openWrite(path);
 
   builtinOpen();
@@ -44,6 +46,8 @@ void File::openWrite(const char *_path) {
 
 void File::openAppend(const char *_path) {
   path = strdup(_path);
+
+  std::cout << "Opening file " << path << " for appending." << std::endl;
 
   handle = PHYSFS_openAppend(path);
 
@@ -60,6 +64,8 @@ void File::builtinOpen() {
 
 void File::close() {
   if (is_open) {
+    std::cout << "Closing file " << path << "." << std::endl;
+
     is_open = false;
 
     PHYSFS_close(handle);

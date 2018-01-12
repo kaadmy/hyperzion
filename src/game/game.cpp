@@ -9,6 +9,8 @@ using namespace MGame; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 Game::Game() {
+  std::cout << "Initializing game..." << std::endl;
+
   filesystem = MCommon::Filesystem::getInstance();
   renderer = MRenderer::Renderer::getInstance();
 
@@ -46,6 +48,12 @@ Game *Game::getInstance() {
   static Game instance;
 
   return &instance;
+}
+
+// Deinit
+
+void Game::deinit() {
+  std::cout << "Deinitializing game..." << std::endl;
 }
 
 // Update

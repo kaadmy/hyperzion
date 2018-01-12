@@ -22,6 +22,8 @@ namespace MGame {
 
     static Game *getInstance();
 
+    void deinit();
+
     void update();
   };
 }

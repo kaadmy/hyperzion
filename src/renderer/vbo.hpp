@@ -14,7 +14,9 @@ namespace MRenderer {
 
   class VBO {
   private:
-    GLuint index;
+    int ident;
+
+    GLuint gl_id;
 
     GLsizei size;
     class Vertex *data;

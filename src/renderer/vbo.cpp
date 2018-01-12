@@ -10,7 +10,7 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 VBO::VBO(Program *program) {
   size = 0;
 
-  glGenBuffers(1, &index);
+  glGenBuffers(1, &gl_id);
 
   bind(program);
 
@@ -25,19 +25,19 @@ VBO::~VBO() {
 void VBO::bind(Program *program) {
   program->bind();
 
-  glBindBuffer(GL_ARRAY_BUFFER, index);
+  glBindBuffer(GL_ARRAY_BUFFER, gl_id);
 
   static const GLsizei stride = sizeof(GLfloat) * 8;
 
-  GLint attrib_position = glGetAttribLocation(index, "v_position");
+  GLint attrib_position = glGetAttribLocation(gl_id, "v_position");
   glEnableVertexAttribArray(attrib_position);
   glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, stride, 0);
 
-  GLint attrib_normal = glGetAttribLocation(index, "v_normal");
+  GLint attrib_normal = glGetAttribLocation(gl_id, "v_normal");
   glEnableVertexAttribArray(attrib_normal);
   glVertexAttribPointer(attrib_normal, 3, GL_FLOAT, GL_FALSE, stride, (void *) (sizeof(GLfloat) * 3));
 
-  GLint attrib_texcoord = glGetAttribLocation(index, "v_texcoord");
+  GLint attrib_texcoord = glGetAttribLocation(gl_id, "v_texcoord");
   glEnableVertexAttribArray(attrib_texcoord);
   glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, stride, (void *) (sizeof(GLfloat) * 6));
 }

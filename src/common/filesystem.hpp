@@ -21,6 +21,8 @@ namespace MCommon {
     static Filesystem *getInstance();
 
     void init(const char *name);
+    void deinit();
+
     bool mount(const char *dir, const char *mountpoint);
 
     bool checkError(const char *action, const char *path);

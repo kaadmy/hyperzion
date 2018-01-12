@@ -28,6 +28,8 @@ namespace MClient {
 
     static Client *getInstance();
 
+    void deinit();
+
     void main();
   };
 }

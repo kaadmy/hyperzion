@@ -3,6 +3,7 @@
 
 set(RENDERER_SOURCES
   glad.cpp
+  material.cpp
   program.cpp
   renderer.cpp
   vbo.cpp)

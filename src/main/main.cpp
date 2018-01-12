@@ -3,14 +3,21 @@
 #include "shared.hpp"
 #include "revision.h"
 
+static struct {
+  MCommon::Filesystem *filesystem;
+  MClient::Client *client;
+} main_state;
+
 void shutdown(void) {
+  main_state.client->deinit();
+  main_state.filesystem->deinit();
+
   std::cout << "Shutdown." << std::endl;
 }
 
-#define CHECKERR(msg) printf("PhysFS [%s]: %s\n", msg, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()))
-
 int main(int argc, char **argv) {
   std::cout << CONFIG_GAME_TITLE << " version " << CONFIG_VERSION_STRING << "-" << GIT_REVISION<< std::endl;
+  std::cout << "Starting..." << std::endl;
 
   // Assign atexit handler
 
@@ -19,17 +26,16 @@ int main(int argc, char **argv) {
     std::exit(1);
   }
 
-  // Initialize some singletons
+  // Create (and initialize where applicable) singletons
 
-  MCommon::Filesystem *filesystem = MCommon::Filesystem::getInstance();
+  main_state.filesystem = MCommon::Filesystem::getInstance();
+  main_state.filesystem->init(argv[0]);
 
-  filesystem->init(argv[0]);
-
-  MClient::Client *client = MClient::Client::getInstance();
+  main_state.client = MClient::Client::getInstance();
 
   // Run client main loop
 
-  client->main();
+  main_state.client->main();
 
   return 0; // Clean exit status; calls atexit
 }

@@ -6,6 +6,7 @@ set(RENDERER_SOURCES
   material.cpp
   program.cpp
   renderer.cpp
+  texture.cpp
   vbo.cpp)
 
 # Setup binary

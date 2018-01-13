@@ -24,42 +24,44 @@ File::~File() {
 
 // Open/close
 
-void File::openRead(const char *_path) {
+bool File::openRead(const char *_path) {
   path = strdup(_path);
 
   std::cout << "Opening file " << path << " for reading." << std::endl;
 
   handle = PHYSFS_openRead(path);
 
-  builtinOpen();
+  return builtinOpen();
 }
 
-void File::openWrite(const char *_path) {
+bool File::openWrite(const char *_path) {
   path = strdup(_path);
 
   std::cout << "Opening file " << path << " for writing." << std::endl;
 
   handle = PHYSFS_openWrite(path);
 
-  builtinOpen();
+  return builtinOpen();
 }
 
-void File::openAppend(const char *_path) {
+bool File::openAppend(const char *_path) {
   path = strdup(_path);
 
   std::cout << "Opening file " << path << " for appending." << std::endl;
 
   handle = PHYSFS_openAppend(path);
 
-  builtinOpen();
+  return builtinOpen();
 }
 
-void File::builtinOpen() {
+bool File::builtinOpen() {
   is_open = true;
 
   if (handle == NULL || !filesystem->checkError("open", path)) {
     is_open = false;
   }
+
+  return is_open;
 }
 
 void File::close() {
@@ -69,8 +71,9 @@ void File::close() {
     is_open = false;
 
     PHYSFS_close(handle);
-
     handle = NULL;
+
+    free(path);
   }
 
   freeData();
@@ -81,12 +84,31 @@ void File::close() {
 void File::freeData() {
   if (filedata != NULL) {
     free(filedata);
-
     filedata = NULL;
   }
+
+  filelength = 0;
+}
+
+// File length
+
+int64_t File::length() {
+  if (filelength == 0 && is_open) {
+    filelength = PHYSFS_fileLength(handle);
+    filesystem->checkError("PHYSFS_fileLength", path);
+  }
+
+  return filelength;
 }
 
 // Reading
+
+int64_t File::readBytes(char *buffer, uint64_t length) {
+  int64_t status = PHYSFS_readBytes(handle, buffer, length);
+  filesystem->checkError("PHYSFS_readBytes", path);
+
+  return status;
+}
 
 const char *File::read() {
   if (!is_open) {
@@ -95,17 +117,45 @@ const char *File::read() {
 
   freeData(); // Ensure cache is clear and force re-read
 
-  filelength = PHYSFS_fileLength(handle);
-  filesystem->checkError("PHYSFS_fileLength", path);
+  length(); // This sets filelength automatically
 
   filedata = (char *) malloc(filelength);
 
-  PHYSFS_readBytes(handle, filedata, filelength);
-  filesystem->checkError("PHYSFS_readBytes", path);
+  readBytes(filedata, filelength);
 
   filedata[filelength] = '\0'; // ?? Ensure a NUL, is this required?
 
   //std::cout << filedata << std::endl;
 
   return filedata;
+}
+
+// Seeking and EOF checks
+
+int64_t File::tell() {
+  if (!is_open) {
+    return 0;
+  }
+
+  int64_t position = PHYSFS_tell(handle);
+  filesystem->checkError("PHYSFS_tell", path);
+
+  return position;
+}
+
+void File::seek(uint64_t position) {
+  PHYSFS_seek(handle, position);
+  filesystem->checkError("PHYSFS_seek", path);
+}
+
+void File::skip(uint64_t offset) {
+  seek(tell() + offset);
+}
+
+int File::eof() {
+  if (!is_open) {
+    return 0;
+  }
+
+  return PHYSFS_eof(handle);
 }

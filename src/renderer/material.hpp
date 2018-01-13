@@ -3,6 +3,7 @@
 
 #include "glad.h"
 #include "shared.hpp"
+#include "texture.hpp"
 
 namespace MRenderer {
   const int MAX_TEXTURE_UNITS = 4;

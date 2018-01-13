@@ -48,11 +48,17 @@ void Filesystem::init(const char *name) {
   // Get path separator
 
   separator = (char *) PHYSFS_getDirSeparator();
-  separatorlen = strlen(separator);
+  separatorlength = strlen(separator);
 
   // Load basedir and mount
 
-  basedir = (char *) PHYSFS_getBaseDir();
+  const char *path = (char *) PHYSFS_getBaseDir();
+
+  basedir = (char *) malloc(strlen(path) + separatorlength + strlen(CONFIG_PATH_DATA));
+
+  strcat(basedir, path);
+  strcat(basedir, separator);
+  strcat(basedir, CONFIG_PATH_DATA);
 
   if (!mount(basedir, "/")) {
     std::cout << "Failed to mount base dir, ignoring." << std::endl;

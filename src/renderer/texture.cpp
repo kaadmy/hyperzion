@@ -58,6 +58,8 @@ void Texture::load() {
   } else {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixeldata);
   }
+
+  stbi_image_free(pixeldata);
 }
 
 void Texture::applyParameters() {

@@ -57,7 +57,7 @@ bool File::openAppend(const char *_path) {
 bool File::builtinOpen() {
   is_open = true;
 
-  if (handle == NULL || !filesystem->checkError("open", path)) {
+  if (!filesystem->checkError("PHYSFS_open*", path) || handle == NULL) {
     is_open = false;
   }
 

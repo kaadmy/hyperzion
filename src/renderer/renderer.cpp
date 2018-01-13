@@ -61,13 +61,22 @@ void Renderer::deinit() {
 
   int i;
 
+  std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl;
   for (i = (num_vbos - 1); i > 0; i--) {
     delete vbos[i];
   }
+
+  std::cout << "Freeing " << num_materials << " materials..." << std::endl;
   for (i = (num_materials - 1); i > 0; i--) {
     delete materials[i];
   }
 
+  std::cout << "Freeing " << num_textures << " textures..." << std::endl;
+  for (i = (num_textures - 1); i > 0; i--) {
+    delete textures[i];
+  }
+
+  std::cout << "Freeing " << num_programs << " programs..." << std::endl;
   for (i = (num_programs - 1); i > 0; i--) {
     delete programs[i];
   }
@@ -92,7 +101,20 @@ int Renderer::addProgram(Program *program) {
   int index = num_programs;
   num_programs++;
 
+  std::cout << "Adding program ID " << index << " to renderer..." << std::endl;
+
   programs[index] = program;
+
+  return index;
+}
+
+int Renderer::addTexture(Texture *texture) {
+  int index = num_textures;
+  num_textures++;
+
+  std::cout << "Adding texture ID " << index << " to renderer..." << std::endl;
+
+  textures[index] = texture;
 
   return index;
 }
@@ -100,6 +122,8 @@ int Renderer::addProgram(Program *program) {
 int Renderer::addMaterial(Material *material) {
   int index = num_materials;
   num_materials++;
+
+  std::cout << "Adding material ID " << index << " to renderer..." << std::endl;
 
   materials[index] = material;
 
@@ -109,6 +133,8 @@ int Renderer::addMaterial(Material *material) {
 int Renderer::addVBO(VBO *vbo) {
   int index = num_vbos;
   num_vbos++;
+
+  std::cout << "Adding VBO ID " << index << " to renderer..." << std::endl;
 
   vbos[index] = vbo;
 

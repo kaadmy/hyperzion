@@ -20,11 +20,11 @@ Game::Game() {
 
   MCommon::File *file = new File();
 
-  file->openRead("data/shaders/default.vs");
+  file->openRead("shaders/default.vs");
   test_program->bindShader(GL_VERTEX_SHADER, file->read());
   file->close();
 
-  file->openRead("data/shaders/default.fs");
+  file->openRead("shaders/default.fs");
   test_program->bindShader(GL_FRAGMENT_SHADER, file->read());
   file->close();
 
@@ -32,9 +32,19 @@ Game::Game() {
 
   test_program->link();
 
+  renderer->addProgram(test_program);
+
+  // Create test material
+
+  test_material = new MRenderer::Material(test_program, "textures/null");
+
+  renderer->addMaterial(test_material);
+
   // Create test VBO
 
   test_vbo = new MRenderer::VBO(test_program);
+
+  renderer->addVBO(test_vbo);
 }
 
 Game::~Game() {

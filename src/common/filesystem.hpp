@@ -12,7 +12,7 @@ namespace MCommon {
     bool is_init;
 
     char *separator;
-    uint8_t separatorlen;
+    uint8_t separatorlength;
 
     char *basedir;
   public:

@@ -1,5 +1,6 @@
 
 #include "material.hpp"
+#include "renderer.hpp"
 
 using namespace MRenderer; // Make this module's namespace local for convenience
 
@@ -7,15 +8,32 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 // Constructor/destructor
 
-Material::Material() {
-  // ??? Load texture here
+Material::Material(Program *_program, const char *_path) {
+  path = strdup(_path);
+
+  std::cout << "Creating material " << path << "." << std::endl;
+
+  Renderer *renderer = Renderer::getInstance();
+
+  program = _program;
+
+  texture0_enabled = true;
+  texture0 = new Texture("textures/null.png"); // ??? Obviously this is a placeholder
+  renderer->addTexture(texture0);
+
+  texture1_enabled = false;
+
+  texture2_enabled = false;
+
+  texture3_enabled = false;
 }
 
 Material::~Material() {
+  free(path);
 }
 
 // Binding
 
 void Material::bind() {
-  // ??? Bind texture
+  texture0->bind();
 }

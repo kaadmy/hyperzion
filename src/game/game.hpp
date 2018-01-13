@@ -16,6 +16,7 @@ namespace MGame {
     MRenderer::Renderer *renderer;
 
     MRenderer::Program *test_program;
+    MRenderer::Material *test_material;
     MRenderer::VBO *test_vbo;
   public:
     ~Game();

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "camera.hpp"
 #include "glad.h"
 #include "material.hpp"
 #include "program.hpp"
@@ -12,6 +13,7 @@ namespace MRenderer {
   const int MAX_TEXTURES = 2048;
   const int MAX_MATERIALS = 1024;
   const int MAX_VBOS = 512;
+  const int MAX_CAMERAS = 32;
 
   const int AXIS_X = 0;
   const int AXIS_Y = 1;
@@ -25,11 +27,13 @@ namespace MRenderer {
     int num_textures;
     int num_materials;
     int num_vbos;
+    int num_cameras;
 
     class Program *programs[MAX_PROGRAMS];
     class Texture *textures[MAX_TEXTURES];
     class Material *materials[MAX_MATERIALS];
     class VBO *vbos[MAX_VBOS];
+    class Camera *cameras[MAX_CAMERAS];
   public:
     ~Renderer();
 
@@ -45,5 +49,6 @@ namespace MRenderer {
     int addTexture(Texture *texture);
     int addMaterial(Material *material);
     int addVBO(VBO *vbo);
+    int addCamera(Camera *camera);
   };
 }

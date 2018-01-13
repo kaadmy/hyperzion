@@ -2,6 +2,7 @@
 #pragma once
 
 #include "common/filesystem.hpp"
+#include "renderer/material.hpp"
 #include "renderer/program.hpp"
 #include "renderer/renderer.hpp"
 #include "renderer/vbo.hpp"

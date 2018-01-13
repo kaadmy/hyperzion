@@ -61,6 +61,11 @@ void Renderer::deinit() {
 
   int i;
 
+  VERBOSE(std::cout << "Freeing " << num_cameras << " cameras..." << std::endl)
+  for (i = (num_cameras - 1); i > 0; i--) {
+    delete cameras[i];
+  }
+
   VERBOSE(std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl)
   for (i = (num_vbos - 1); i > 0; i--) {
     delete vbos[i];
@@ -137,6 +142,17 @@ int Renderer::addVBO(VBO *vbo) {
   VERBOSE(std::cout << "Adding VBO ID " << index << " to renderer..." << std::endl)
 
   vbos[index] = vbo;
+
+  return index;
+}
+
+int Renderer::addCamera(Camera *camera) {
+  int index = num_cameras;
+  num_cameras++;
+
+  VERBOSE(std::cout << "Adding camera ID " << index << " to renderer..." << std::endl)
+
+  cameras[index] = camera;
 
   return index;
 }

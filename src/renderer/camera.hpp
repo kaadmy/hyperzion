@@ -5,22 +5,28 @@
 #include "shared.hpp"
 
 namespace MRenderer {
-  class Camera3D {
+  class Camera {
   private:
     int ident;
 
-    GLfloat fov;
+    bool ortho;
+
+    GLfloat fov; // X-axis FOV
+    GLfloat aspect;
 
     GLfloat position[3];
     GLfloat angles[3];
   public:
-    Camera3D();
-    ~Camera3D();
+    Camera(bool _ortho);
+    ~Camera();
 
     void bind();
 
     void setFOV(GLfloat _fov);
     GLfloat getFOV();
+
+    void setAspect(GLfloat _aspect);
+    GLfloat getAspect();
 
     void setPosition(GLfloat x, GLfloat y, GLfloat z);
     void getPosition(GLfloat *x, GLfloat *y, GLfloat *z);

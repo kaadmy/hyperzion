@@ -4,40 +4,51 @@
 
 using namespace MRenderer; // Make this module's namespace local for convenience
 
-/* class Camera3D */
+/* class Camera */
 
 // Constructor/destructor
 
-Camera3D::Camera3D() {
+Camera::Camera(bool _ortho) {
+  ortho = _ortho;
 }
 
-Camera3D::~Camera3D() {
+Camera::~Camera() {
 }
 
 // Binding
 
-void Camera3D::bind() {
+void Camera::bind() {
 }
 
 // FOV
 
-void Camera3D::setFOV(GLfloat _fov) {
+void Camera::setFOV(GLfloat _fov) {
   fov = _fov;
 }
 
-GLfloat Camera3D::getFOV() {
+GLfloat Camera::getFOV() {
   return fov;
+}
+
+// Aspect
+
+void Camera::setAspect(GLfloat _aspect) {
+  aspect = _aspect;
+}
+
+GLfloat Camera::getAspect() {
+  return aspect;
 }
 
 // Position
 
-void Camera3D::setPosition(GLfloat x, GLfloat y, GLfloat z) {
+void Camera::setPosition(GLfloat x, GLfloat y, GLfloat z) {
   position[AXIS_X] = x;
   position[AXIS_Y] = y;
   position[AXIS_Z] = z;
 }
 
-void Camera3D::getPosition(GLfloat *x, GLfloat *y, GLfloat *z) {
+void Camera::getPosition(GLfloat *x, GLfloat *y, GLfloat *z) {
   x = &position[AXIS_X];
   y = &position[AXIS_Y];
   z = &position[AXIS_Z];
@@ -45,13 +56,13 @@ void Camera3D::getPosition(GLfloat *x, GLfloat *y, GLfloat *z) {
 
 // Angles
 
-void Camera3D::setAngles(GLfloat x, GLfloat y, GLfloat z) {
+void Camera::setAngles(GLfloat x, GLfloat y, GLfloat z) {
   angles[AXIS_X] = x;
   angles[AXIS_Y] = y;
   angles[AXIS_Z] = z;
 }
 
-void Camera3D::getAngles(GLfloat *x, GLfloat *y, GLfloat *z) {
+void Camera::getAngles(GLfloat *x, GLfloat *y, GLfloat *z) {
   x = &angles[AXIS_X];
   y = &angles[AXIS_Y];
   z = &angles[AXIS_Z];

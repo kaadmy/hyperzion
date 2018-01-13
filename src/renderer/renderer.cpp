@@ -9,7 +9,7 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 Renderer::Renderer() {
-  VERBOSE(std::cout << "Initializing renderer..." << std::endl)
+  VERBOSE(std::cout << "Initializing renderer..." << std::endl);
 
   // Initialize GLAD
 
@@ -57,31 +57,31 @@ Renderer *Renderer::getInstance() {
 // Deinit
 
 void Renderer::deinit() {
-  VERBOSE(std::cout << "Deinitializing renderer..." << std::endl)
+  VERBOSE(std::cout << "Deinitializing renderer..." << std::endl);
 
   int i;
 
-  VERBOSE(std::cout << "Freeing " << num_cameras << " cameras..." << std::endl)
+  VERBOSE(std::cout << "Freeing " << num_cameras << " cameras..." << std::endl);
   for (i = (num_cameras - 1); i > 0; i--) {
     delete cameras[i];
   }
 
-  VERBOSE(std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl)
+  VERBOSE(std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl);
   for (i = (num_vbos - 1); i > 0; i--) {
     delete vbos[i];
   }
 
-  VERBOSE(std::cout << "Freeing " << num_materials << " materials..." << std::endl)
+  VERBOSE(std::cout << "Freeing " << num_materials << " materials..." << std::endl);
   for (i = (num_materials - 1); i > 0; i--) {
     delete materials[i];
   }
 
-  VERBOSE(std::cout << "Freeing " << num_textures << " textures..." << std::endl)
+  VERBOSE(std::cout << "Freeing " << num_textures << " textures..." << std::endl);
   for (i = (num_textures - 1); i > 0; i--) {
     delete textures[i];
   }
 
-  VERBOSE(std::cout << "Freeing " << num_programs << " programs..." << std::endl)
+  VERBOSE(std::cout << "Freeing " << num_programs << " programs..." << std::endl);
   for (i = (num_programs - 1); i > 0; i--) {
     delete programs[i];
   }
@@ -106,7 +106,7 @@ int Renderer::addProgram(Program *program) {
   int index = num_programs;
   num_programs++;
 
-  VERBOSE(std::cout << "Adding program ID " << index << " to renderer..." << std::endl)
+  VERBOSE(std::cout << "Adding program ID " << index << " to renderer..." << std::endl);
 
   programs[index] = program;
 
@@ -117,7 +117,7 @@ int Renderer::addTexture(Texture *texture) {
   int index = num_textures;
   num_textures++;
 
-  VERBOSE(std::cout << "Adding texture ID " << index << " to renderer..." << std::endl)
+  VERBOSE(std::cout << "Adding texture ID " << index << " to renderer..." << std::endl);
 
   textures[index] = texture;
 
@@ -128,7 +128,7 @@ int Renderer::addMaterial(Material *material) {
   int index = num_materials;
   num_materials++;
 
-  VERBOSE(std::cout << "Adding material ID " << index << " to renderer..." << std::endl)
+  VERBOSE(std::cout << "Adding material ID " << index << " to renderer..." << std::endl);
 
   materials[index] = material;
 
@@ -139,7 +139,7 @@ int Renderer::addVBO(VBO *vbo) {
   int index = num_vbos;
   num_vbos++;
 
-  VERBOSE(std::cout << "Adding VBO ID " << index << " to renderer..." << std::endl)
+  VERBOSE(std::cout << "Adding VBO ID " << index << " to renderer..." << std::endl);
 
   vbos[index] = vbo;
 
@@ -150,7 +150,7 @@ int Renderer::addCamera(Camera *camera) {
   int index = num_cameras;
   num_cameras++;
 
-  VERBOSE(std::cout << "Adding camera ID " << index << " to renderer..." << std::endl)
+  VERBOSE(std::cout << "Adding camera ID " << index << " to renderer..." << std::endl);
 
   cameras[index] = camera;
 

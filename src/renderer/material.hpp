@@ -10,7 +10,7 @@ namespace MRenderer {
   private:
     int ident;
 
-    char *path;
+    char *name;
 
     class Program *program;
 
@@ -26,7 +26,7 @@ namespace MRenderer {
     bool texture3_enabled;
     class Texture *texture3;
   public:
-    Material(Program *_program, const char *_path);
+    Material(Program *_program, const char *_name);
     ~Material();
 
     void bind();

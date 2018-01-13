@@ -2,7 +2,8 @@
 # Source files
 
 set(GAME_SOURCES
-  game.cpp)
+  game.cpp
+  ship.cpp)
 
 # Setup binary
 

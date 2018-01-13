@@ -7,8 +7,11 @@
 #include "renderer/renderer.hpp"
 #include "renderer/vbo.hpp"
 #include "shared.hpp"
+#include "ship.hpp"
 
 namespace MGame {
+  const int MAX_SHIPS = 32;
+
   class Game {
   private:
     Game();
@@ -16,9 +19,8 @@ namespace MGame {
     MCommon::Filesystem *filesystem;
     MRenderer::Renderer *renderer;
 
-    MRenderer::Program *test_program;
-    MRenderer::Material *test_material;
-    MRenderer::VBO *test_vbo;
+    int num_ships;
+    class Ship *ships[MAX_SHIPS];
   public:
     ~Game();
 

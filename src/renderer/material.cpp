@@ -8,8 +8,8 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 // Constructor/destructor
 
-Material::Material(Program *_program, const char *_path) {
-  path = strdup(_path);
+Material::Material(Program *_program, const char *_name) {
+  name = strdup(_name);
 
   Renderer *renderer = Renderer::getInstance();
 
@@ -27,7 +27,7 @@ Material::Material(Program *_program, const char *_path) {
 }
 
 Material::~Material() {
-  free(path);
+  free(name);
 }
 
 // Binding

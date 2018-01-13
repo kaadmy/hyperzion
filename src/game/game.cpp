@@ -1,5 +1,4 @@
 
-#include "common/file.cpp"
 #include "game.hpp"
 
 using namespace MGame; // Make this module's namespace local for convenience
@@ -9,47 +8,22 @@ using namespace MGame; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 Game::Game() {
-  VERBOSE(std::cout << "Initializing game..." << std::endl)
+  VERBOSE(std::cout << "Initializing game..." << std::endl);
 
   filesystem = MCommon::Filesystem::getInstance();
   renderer = MRenderer::Renderer::getInstance();
 
-  // Create test shader program
-
-  test_program = new MRenderer::Program();
-
-  MCommon::File *file = new File();
-
-  file->openRead("shaders/default.vs");
-  test_program->bindShader(GL_VERTEX_SHADER, file->read());
-  file->close();
-
-  file->openRead("shaders/default.fs");
-  test_program->bindShader(GL_FRAGMENT_SHADER, file->read());
-  file->close();
-
-  delete file;
-
-  test_program->link();
-
-  renderer->addProgram(test_program);
-
-  // Create test material
-
-  test_material = new MRenderer::Material(test_program, "textures/null");
-
-  renderer->addMaterial(test_material);
-
-  // Create test VBO
-
-  test_vbo = new MRenderer::VBO();
-
-  renderer->addVBO(test_vbo);
+  num_ships = 1;
+  ships[0] = new Ship();
 }
 
 Game::~Game() {
-  delete test_vbo;
-  delete test_program;
+  int i;
+
+  VERBOSE(std::cout << "Freeing " << num_ships << " ships..." << std::endl);
+  for (i = (num_ships - 1); i > 0; i--) {
+    delete ships[i];
+  }
 }
 
 // Singleton getter
@@ -63,7 +37,7 @@ Game *Game::getInstance() {
 // Deinit
 
 void Game::deinit() {
-  VERBOSE(std::cout << "Deinitializing game..." << std::endl)
+  VERBOSE(std::cout << "Deinitializing game..." << std::endl);
 }
 
 // Update
@@ -75,14 +49,19 @@ void Game::update() {
 
   // Update game
 
-  // ??? Put game update code here
+  int i;
+
+  for (i = 0; i < num_ships; i++) {
+    ships[i]->update();
+  }
 
   // 3D Rendering
 
-  renderer->draw();
+  for (i = 0; i < num_ships; i++) {
+    ships[i]->draw();
+  }
 
-  test_material->bind();
-  test_vbo->draw();
+  renderer->draw();
 
   // 2D rendering (HUD, UI)
 

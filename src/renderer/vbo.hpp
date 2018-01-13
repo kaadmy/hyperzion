@@ -26,6 +26,8 @@ namespace MRenderer {
 
     void bind();
 
-    void draw();
+    void draw(GLint first, GLsizei count);
+
+    GLsizei getLength();
   };
 }

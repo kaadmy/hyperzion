@@ -43,8 +43,20 @@ void VBO::bind() {
 
 // Drawing
 
-void VBO::draw() {
+void VBO::draw(GLint first, GLsizei count) {
+  if ((first + count) > length) {
+    std::cout << "VBO draw range out of bounds (" << (first + count) << " > " << length<< "), skipping." << std::endl;
+
+    return;
+  }
+
   bind();
 
-  glDrawArrays(GL_TRIANGLES, 0, length);
+  glDrawArrays(GL_TRIANGLES, first, count);
+}
+
+// Length getter
+
+GLsizei VBO::getLength() {
+  return length;
 }

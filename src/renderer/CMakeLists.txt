@@ -5,6 +5,7 @@ set(RENDERER_SOURCES
   camera.cpp
   glad.cpp
   material.cpp
+  model.cpp
   program.cpp
   renderer.cpp
   texture.cpp
@@ -18,4 +19,5 @@ add_library(renderer
 target_link_libraries(renderer
   ${SHARED_LIBRARIES}
   ${GLFW_STATIC_LIBRARIES}
-  ${OPENGL_LIBRARIES})
+  ${OPENGL_LIBRARIES}
+  common)

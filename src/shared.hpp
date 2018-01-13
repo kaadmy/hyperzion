@@ -9,7 +9,7 @@
 #include "config.h"
 
 #if CONFIG_VERBOSE
-#define VERBOSE(code) code;
+#define VERBOSE(code) code
 #else
 #define VERBOSE(code)
 #endif

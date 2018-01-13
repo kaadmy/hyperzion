@@ -25,7 +25,7 @@ namespace MRenderer {
 
     bool texture3_enabled;
     class Texture *texture3;
-public:
+  public:
     Material(Program *_program, const char *_path);
     ~Material();
 

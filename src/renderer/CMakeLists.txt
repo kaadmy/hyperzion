@@ -2,6 +2,7 @@
 # Source files
 
 set(RENDERER_SOURCES
+  camera.cpp
   glad.cpp
   material.cpp
   program.cpp

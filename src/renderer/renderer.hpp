@@ -13,6 +13,10 @@ namespace MRenderer {
   const int MAX_MATERIALS = 1024;
   const int MAX_VBOS = 512;
 
+  const int AXIS_X = 0;
+  const int AXIS_Y = 1;
+  const int AXIS_Z = 2;
+
   class Renderer { // Singleton
   private:
     Renderer();

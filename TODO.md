@@ -14,14 +14,13 @@ Things to do, in no particular order:
 ## Implement MRenderer::Camera3D and MRenderer::Camera2D
 
 - Dynamic switching between cameras
+- Only one active camera instance at a time
 
 ## Implement MRenderer::Material
 
 - Texture loading
 - Material definition loading
   - Material definition format
-- Move shader program into materials
-- Remove shader programs from VBOs
 
 ## Sound playback
 

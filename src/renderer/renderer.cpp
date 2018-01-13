@@ -37,7 +37,7 @@ Renderer::Renderer() {
 
   // OpenGL state
 
-  glClearColor(0.8, 0.7, 0.5, 1.0);
+  glClearColor(0.8, 0.8, 0.8, 1.0);
 
   glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);

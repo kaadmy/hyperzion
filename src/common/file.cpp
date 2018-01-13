@@ -27,7 +27,7 @@ File::~File() {
 bool File::openRead(const char *_path) {
   path = strdup(_path);
 
-  std::cout << "Opening file " << path << " for reading." << std::endl;
+  VERBOSE(std::cout << "Opening file " << path << " for reading." << std::endl)
 
   handle = PHYSFS_openRead(path);
 
@@ -37,7 +37,7 @@ bool File::openRead(const char *_path) {
 bool File::openWrite(const char *_path) {
   path = strdup(_path);
 
-  std::cout << "Opening file " << path << " for writing." << std::endl;
+  VERBOSE(  std::cout << "Opening file " << path << " for writing." << std::endl)
 
   handle = PHYSFS_openWrite(path);
 
@@ -47,7 +47,7 @@ bool File::openWrite(const char *_path) {
 bool File::openAppend(const char *_path) {
   path = strdup(_path);
 
-  std::cout << "Opening file " << path << " for appending." << std::endl;
+  VERBOSE(std::cout << "Opening file " << path << " for appending." << std::endl)
 
   handle = PHYSFS_openAppend(path);
 
@@ -66,7 +66,7 @@ bool File::builtinOpen() {
 
 void File::close() {
   if (is_open) {
-    std::cout << "Closing file " << path << "." << std::endl;
+    VERBOSE(std::cout << "Closing file " << path << "." << std::endl)
 
     is_open = false;
 

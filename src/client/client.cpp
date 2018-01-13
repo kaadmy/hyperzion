@@ -13,7 +13,7 @@ static void callbackError(int status, const char *message) {
 }
 
 Client::Client() {
-  std::cout << "Initializing client..." << std::endl;
+  VERBOSE(std::cout << "Initializing client..." << std::endl)
 
   // Initialize GLFW
 
@@ -65,7 +65,7 @@ Client *Client::getInstance() {
 // Deinit
 
 void Client::deinit() {
-  std::cout << "Deinitializing client..." << std::endl;
+  VERBOSE(std::cout << "Deinitializing client..." << std::endl)
 
   game->deinit();
   renderer->deinit();

@@ -11,8 +11,6 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 Material::Material(Program *_program, const char *_path) {
   path = strdup(_path);
 
-  std::cout << "Creating material " << path << "." << std::endl;
-
   Renderer *renderer = Renderer::getInstance();
 
   program = _program;

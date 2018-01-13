@@ -5,9 +5,9 @@ project(hyperzion CXX)
 
 # Disable common warnings
 
-option(SHOW_ALL_WARNINGS "Show all warnings" OFF)
+option(ENABLE_MORE_WARNINGS "Show all warnings" OFF)
 
-if(${SHOW_ALL_WARNINGS})
+if(${ENABLE_MORE_WARNINGS})
   set(WARNING_FLAGS "-Wall -Wextra")
 else()
   set(WARNING_FLAGS "-Wall")
@@ -15,12 +15,24 @@ endif()
 
 # Debug build
 
-option(DEBUG_BUILD "Make a debug build" ON)
+option(ENABLE_DEBUG "Make a debug build" ON)
 
-if(${DEBUG_BUILD})
+if(${ENABLE_DEBUG})
   set(DEBUG_FLAGS "-O0 -g") # No optimization, keep debug symbols
 else()
   set(DEBUG_FLAGS "-O3") # Optimization enabled
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} ${DEBUG_FLAGS}")
+
+# Verbose mode
+
+option(ENABLE_VERBOSE "Enable verbose logging" OFF)
+
+if(${ENABLE_VERBOSE})
+  set(CONFIG_VERBOSE 1)
+else()
+  set(CONFIG_VERBOSE 0)
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} ${DEBUG_FLAGS}")
@@ -63,3 +75,18 @@ set(SHARED_LIBRARIES
 # Source
 
 add_subdirectory(src)
+
+# Display build configuration
+
+macro(message_bool _NAME _VALUE)
+  if (${_VALUE})
+    message(STATUS "  ${_NAME}: yes")
+  else()
+    message(STATUS "  ${_NAME}: no")
+  endif()
+endmacro()
+
+message(STATUS "Build configuration:")
+message_bool("Show more warnings" ENABLE_MORE_WARNINGS)
+message_bool("Debug build" ENABLE_DEBUG)
+message_bool("Verbose logging" ENABLE_VERBOSE)

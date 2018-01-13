@@ -29,7 +29,7 @@ void Filesystem::init(const char *name) {
     return;
   }
 
-  std::cout << "Initializing filesystem..." << std::endl;
+  VERBOSE(std::cout << "Initializing filesystem..." << std::endl)
 
   is_init = true;
 
@@ -66,7 +66,7 @@ void Filesystem::init(const char *name) {
 }
 
 void Filesystem::deinit() {
-  std::cout << "Deinitializing filesystem..." << std::endl;
+  VERBOSE(std::cout << "Deinitializing filesystem..." << std::endl)
 
   is_init = false;
 

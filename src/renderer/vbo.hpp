@@ -18,7 +18,7 @@ namespace MRenderer {
 
     GLuint gl_id;
 
-    GLsizei size;
+    GLsizei length;
     class Vertex *data;
   public:
     VBO();

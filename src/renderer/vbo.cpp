@@ -8,13 +8,13 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 // Constructor/destructor
 
 VBO::VBO() {
-  size = 0;
+  length = 0;
 
   glGenBuffers(1, &gl_id);
 
   bind();
 
-  glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, length, data, GL_STATIC_DRAW);
 }
 
 VBO::~VBO() {
@@ -30,7 +30,7 @@ void VBO::bind() {
 
   GLint attrib_position = glGetAttribLocation(gl_id, "v_position");
   glEnableVertexAttribArray(attrib_position);
-  glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, stride, 0);
+  glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, stride, (void *) 0);
 
   GLint attrib_normal = glGetAttribLocation(gl_id, "v_normal");
   glEnableVertexAttribArray(attrib_normal);
@@ -46,5 +46,5 @@ void VBO::bind() {
 void VBO::draw() {
   bind();
 
-  glDrawArrays(GL_TRIANGLES, 0, size);
+  glDrawArrays(GL_TRIANGLES, 0, length);
 }

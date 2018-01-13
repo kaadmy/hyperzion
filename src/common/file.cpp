@@ -90,7 +90,7 @@ void File::freeData() {
   filelength = 0;
 }
 
-// File length
+// Checks and getters
 
 int64_t File::length() {
   if (filelength == 0 && is_open) {
@@ -99,6 +99,34 @@ int64_t File::length() {
   }
 
   return filelength;
+}
+
+int64_t File::tell() {
+  if (!is_open) {
+    return 0;
+  }
+
+  int64_t position = PHYSFS_tell(handle);
+  filesystem->checkError("PHYSFS_tell", path);
+
+  return position;
+}
+
+void File::seek(uint64_t position) {
+  PHYSFS_seek(handle, position);
+  filesystem->checkError("PHYSFS_seek", path);
+}
+
+void File::skip(uint64_t offset) {
+  seek(tell() + offset);
+}
+
+int File::eof() {
+  if (!is_open) {
+    return 0;
+  }
+
+  return PHYSFS_eof(handle);
 }
 
 // Reading
@@ -130,32 +158,48 @@ const char *File::read() {
   return filedata;
 }
 
-// Seeking and EOF checks
+// Byte reading
 
-int64_t File::tell() {
-  if (!is_open) {
-    return 0;
+void File::readSBE16(PHYSFS_sint16 *value) {
+  if (!PHYSFS_readSBE16(handle, value)) {
+    filesystem->checkError("PHYSFS_readSBE16", path);
   }
-
-  int64_t position = PHYSFS_tell(handle);
-  filesystem->checkError("PHYSFS_tell", path);
-
-  return position;
 }
 
-void File::seek(uint64_t position) {
-  PHYSFS_seek(handle, position);
-  filesystem->checkError("PHYSFS_seek", path);
-}
-
-void File::skip(uint64_t offset) {
-  seek(tell() + offset);
-}
-
-int File::eof() {
-  if (!is_open) {
-    return 0;
+void File::readUBE16(PHYSFS_uint16 *value) {
+  if (!PHYSFS_readUBE16(handle, value)) {
+    filesystem->checkError("PHYSFS_readUBE16", path);
   }
+}
 
-  return PHYSFS_eof(handle);
+void File::readSBE32(PHYSFS_sint32 *value) {
+  if (!PHYSFS_readSBE32(handle, value)) {
+    filesystem->checkError("PHYSFS_readSBE32", path);
+  }
+}
+
+void File::readUBE32(PHYSFS_uint32 *value) {
+  if (!PHYSFS_readUBE32(handle, value)) {
+    filesystem->checkError("PHYSFS_readUBE32", path);
+  }
+}
+
+void File::readSBE64(PHYSFS_sint64 *value) {
+  if (!PHYSFS_readSBE64(handle, value)) {
+    filesystem->checkError("PHYSFS_readSBE64", path);
+  }
+}
+
+void File::readUBE64(PHYSFS_uint64 *value) {
+  if (!PHYSFS_readUBE64(handle, value)) {
+    filesystem->checkError("PHYSFS_readUBE64", path);
+  }
+}
+
+float File::readFBE() {
+  PHYSFS_uint32 value;
+
+  readUBE32(&value);
+
+  return (float) value;
 }

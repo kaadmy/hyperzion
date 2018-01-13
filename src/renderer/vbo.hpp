@@ -21,11 +21,11 @@ namespace MRenderer {
     GLsizei size;
     class Vertex *data;
   public:
-    VBO(Program *program);
+    VBO();
     ~VBO();
 
-    void bind(Program *program);
+    void bind();
 
-    void draw(Program *program);
+    void draw();
   };
 }

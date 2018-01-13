@@ -42,7 +42,7 @@ Game::Game() {
 
   // Create test VBO
 
-  test_vbo = new MRenderer::VBO(test_program);
+  test_vbo = new MRenderer::VBO();
 
   renderer->addVBO(test_vbo);
 }
@@ -79,8 +79,10 @@ void Game::update() {
 
   // 3D Rendering
 
-  test_vbo->draw(test_program);
   renderer->draw();
+
+  test_material->bind();
+  test_vbo->draw();
 
   // 2D rendering (HUD, UI)
 

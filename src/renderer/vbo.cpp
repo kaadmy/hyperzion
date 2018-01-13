@@ -7,24 +7,23 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 // Constructor/destructor
 
-VBO::VBO(Program *program) {
+VBO::VBO() {
   size = 0;
 
   glGenBuffers(1, &gl_id);
 
-  bind(program);
+  bind();
 
   glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
 VBO::~VBO() {
+  glDeleteBuffers(1, &gl_id);
 }
 
 // Binding
 
-void VBO::bind(Program *program) {
-  program->bind();
-
+void VBO::bind() {
   glBindBuffer(GL_ARRAY_BUFFER, gl_id);
 
   static const GLsizei stride = sizeof(GLfloat) * 8;
@@ -44,8 +43,8 @@ void VBO::bind(Program *program) {
 
 // Drawing
 
-void VBO::draw(Program *program) {
-  bind(program);
+void VBO::draw() {
+  bind();
 
   glDrawArrays(GL_TRIANGLES, 0, size);
 }

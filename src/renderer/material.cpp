@@ -33,5 +33,21 @@ Material::~Material() {
 // Binding
 
 void Material::bind() {
-  texture0->bind();
+  program->bind();
+
+  if (texture0_enabled) {
+    texture0->bind();
+  }
+
+  if (texture1_enabled) {
+    texture1->bind();
+  }
+
+  if (texture2_enabled) {
+    texture2->bind();
+  }
+
+  if (texture3_enabled) {
+    texture3->bind();
+  }
 }

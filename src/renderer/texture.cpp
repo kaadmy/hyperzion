@@ -32,14 +32,15 @@ Texture::~Texture() {
 
 // Binding
 
-void Texture::bind() {
+void Texture::bind(GLenum unit) {
+  glActiveTexture(unit); // ??? Is this correct for defining multiple texture units?
   glBindTexture(GL_TEXTURE_2D, gl_id);
 }
 
 // Loading/setting parameters
 
 void Texture::load() {
-  bind();
+  bind(GL_TEXTURE0);
 
   MCommon::File *file = new MCommon::File();
 
@@ -63,7 +64,7 @@ void Texture::load() {
 }
 
 void Texture::applyParameters() {
-  bind();
+  bind(GL_TEXTURE0);
 
   // Texture wrap
 

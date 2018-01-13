@@ -36,18 +36,18 @@ void Material::bind() {
   program->bind();
 
   if (texture0_enabled) {
-    texture0->bind();
+    texture0->bind(GL_TEXTURE0);
   }
 
   if (texture1_enabled) {
-    texture1->bind();
+    texture1->bind(GL_TEXTURE1);
   }
 
   if (texture2_enabled) {
-    texture2->bind();
+    texture2->bind(GL_TEXTURE2);
   }
 
   if (texture3_enabled) {
-    texture3->bind();
+    texture3->bind(GL_TEXTURE3);
   }
 }

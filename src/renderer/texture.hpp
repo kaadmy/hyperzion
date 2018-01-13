@@ -26,7 +26,7 @@ namespace MRenderer {
     Texture(const char *_path);
     ~Texture();
 
-    void bind();
+    void bind(GLenum unit);
 
     void load();
     void applyParameters();

@@ -8,7 +8,7 @@ varying vec3 f_normal;
 varying vec2 f_texcoord;
 
 void main() {
-  f_normal = v_normal;
+  f_normal = normalize(v_normal);
 
   gl_Position = vec4(v_position, 1.0);
 }

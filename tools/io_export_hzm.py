@@ -8,6 +8,7 @@ import bmesh
 
 import os
 import struct
+import time
 
 bl_info = {
     "name": "HZM model exporter",
@@ -29,16 +30,19 @@ def mesh_triangulate(me):
 
     bm.free()
 
+def clamp(v, l, h):
+    return min(max(v, l), h)
+
 # Big endian binary blob.
 # Format:
 #  {header: "HZM"}
-#  [ushort:tricount]
 #  [ubyte:matcount]
-#  (([float*3:position], [float*3:normal], [float*2:texcoord]) * 3, [byte:material]) * tricount
-#  ([ubyte:namelen], [byte*namelen:name]) * matcount
+#  [ushort:tricount]
+#  ([ubyte:namelen], [byte*namelen:name], [ushort:first], [ushort:count]) * matcount
+#  (([float*3:position], [byte*3:normal], [float*2:texcoord]) * 3) * tricount
 #
 # Limitations:
-#  Max triangles: 65536
+#  Max polygons: 65536
 #  Max materials: 256
 #  Max material name length: 256
 
@@ -47,28 +51,50 @@ class Polygon:
         self.position = position
         self.normal = normal
         self.texcoord = texcoord
-        self.material = material
+        self.material = material # Only used for sorting
 
     def write(self, debug = False):
-        out = ""
+        #print(repr(self))
+
+        out = bytes()
 
         for i in range(3):
-            out += str(struct.pack(">fff", self.position[i].x, self.position[i].y, self.position[i].z))
-            out += str(struct.pack(">fff", self.normal[i].x, self.normal[i].y, self.normal[i].z))
-            out += str(struct.pack(">ff", self.texcoord[i].x, self.texcoord[i].y))
-
-        out += str(struct.pack(">B", self.material))
+            out += struct.pack(">fff", self.position[i].x, self.position[i].y, self.position[i].z)
+            out += struct.pack(">bbb", clamp(int(self.normal[i].x * 256), -128, 127), clamp(int(self.normal[i].y * 256), -128, 127), clamp(int(self.normal[i].z * 256), -128, 127))
+            out += struct.pack(">ff", self.texcoord[i].x, self.texcoord[i].y)
 
         return out
 
     def __repr__(self):
         return repr((self.position, self.normal, self.texcoord, self.material))
 
-def export_mesh(scene, obj):
-    out = ""
+class Material:
+    def __init__(self, name, first, count):
+        self.name = name
+        self.first = first
+        self.count = count
 
-    out_polygons = ""
-    out_materials = ""
+    def write(self):
+        #print(repr(self))
+
+        out = bytes()
+
+        out += struct.pack(">B", len(self.name))
+        out += bytes(self.name, "utf-8")
+
+        out += struct.pack(">H", self.first)
+        out += struct.pack(">H", self.count)
+
+        return out
+
+    def __repr__(self):
+        return repr((self.name, self.first, self.count))
+
+def export_mesh(scene, obj):
+    out = bytes()
+
+    out_polygons = bytes()
+    out_materials = bytes()
 
     mesh = obj.to_mesh(scene, True, "PREVIEW", calc_tessface = False)
     mesh_triangulate(mesh)
@@ -115,24 +141,55 @@ def export_mesh(scene, obj):
 
     # Write materials
 
-    for mat in bpy.data.materials:
-        out_materials += str(struct.pack(">B", len(mat.name) + 1))
-        out_materials += mat.name
+    materials = []
+
+    for i in range(len(bpy.data.materials)):
+        mat = bpy.data.materials[i]
+
+        first = None
+        count = 0
+
+        for j in range(len(polygons)):
+            if polygons[j].material == i:
+                if first == None:
+                    first = j
+            elif first != None:
+                count = j - first
+                break
+        else:
+            count = (j + 1) - first
+
+        m = Material(
+            mat.name,
+            first,
+            count,
+        )
+
+        data = m.write()
+
+        out_materials += data
 
     bpy.data.meshes.remove(mesh)
 
-    out += str(struct.pack(">H", len(polygons)))
-    out += str(struct.pack(">B", len(bpy.data.materials)))
+    out += struct.pack(">B", len(bpy.data.materials))
+    out += struct.pack(">H", len(polygons))
 
-    out += out_polygons
     out += out_materials
+    out += out_polygons
+
+    # Print some export stats
+
+    print("Material count: %d" % len(bpy.data.materials))
+    print("Polygon count: %d" % len(polygons))
 
     return out
 
 def export(context, options):
-    file=open(options["filepath"], "w")
+    time_start = time.time()
 
-    out = "HZM"
+    file = open(options["filepath"], "wb")
+
+    out = bytes("HZM", "utf-8")
 
     if context.active_object.type == "MESH":
         out += export_mesh(context.scene, context.active_object)
@@ -142,6 +199,9 @@ def export(context, options):
     file.write(out)
     file.close()
 
+    time_total = time.time() - time_start
+
+    print("Export took a total of %0.4f seconds" % time_total)
 
 class ExportHZM(bpy.types.Operator, ExportHelper):
     """Export HZM mesh"""

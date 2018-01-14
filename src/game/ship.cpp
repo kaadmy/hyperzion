@@ -14,10 +14,11 @@ Ship::Ship() {
 
   // Load model
 
-  model = new MRenderer::Model("models/ship");
+  model = new MRenderer::Model("models/ship/base");
 }
 
 Ship::~Ship() {
+  delete model;
 }
 
 // Update

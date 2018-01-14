@@ -11,12 +11,14 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 Material::Material(Program *_program, const char *_name) {
   name = strdup(_name);
 
+  VERBOSE(std::cout << "Creating material " << name << "..." << std::endl);
+
   Renderer *renderer = Renderer::getInstance();
 
   program = _program;
 
   texture0_enabled = true;
-  texture0 = new Texture("textures/null.png"); // ??? Obviously this is a placeholder
+  texture0 = new Texture("models/ship/base.png"); // ??? Obviously this is a placeholder
   renderer->addTexture(texture0);
 
   texture1_enabled = false;
@@ -27,6 +29,8 @@ Material::Material(Program *_program, const char *_name) {
 }
 
 Material::~Material() {
+  VERBOSE(std::cout << "Deleting material " << name << "..." << std::endl);
+
   free(name);
 }
 

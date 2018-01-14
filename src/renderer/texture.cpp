@@ -16,6 +16,8 @@ Texture::Texture(const char *_path) {
   width = 0;
   height = 0;
 
+  VERBOSE(std::cout << "Creating texture " << path << "..." << std::endl);
+
   pixeldata = NULL;
 
   glGenTextures(1, &gl_id);
@@ -25,6 +27,8 @@ Texture::Texture(const char *_path) {
 }
 
 Texture::~Texture() {
+  VERBOSE(std::cout << "Deleting texture " << path << "..." << std::endl);
+
   free(path);
 
   glDeleteTextures(1, &gl_id);

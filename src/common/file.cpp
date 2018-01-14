@@ -3,6 +3,18 @@
 
 using namespace MCommon; // Make this module's namespace local for convenience
 
+// Extension helper
+
+char *MCommon::addExtension(const char *path, const char *ext) {
+  size_t pathlen = strlen(path);
+
+  char *buf = (char *) malloc(pathlen + strlen(ext));
+  strcpy(buf, path);
+  strcpy(buf + pathlen, ext);
+
+  return buf;
+}
+
 /* class File */
 
 // Constructor/destructor
@@ -27,7 +39,7 @@ File::~File() {
 bool File::openRead(const char *_path) {
   path = strdup(_path);
 
-  VERBOSE(std::cout << "Opening file " << path << " for reading." << std::endl);
+  std::cout << "Opening file " << path << " for reading." << std::endl;
 
   handle = PHYSFS_openRead(path);
 
@@ -37,7 +49,7 @@ bool File::openRead(const char *_path) {
 bool File::openWrite(const char *_path) {
   path = strdup(_path);
 
-  VERBOSE(  std::cout << "Opening file " << path << " for writing." << std::endl);
+  std::cout << "Opening file " << path << " for writing." << std::endl;
 
   handle = PHYSFS_openWrite(path);
 
@@ -47,7 +59,7 @@ bool File::openWrite(const char *_path) {
 bool File::openAppend(const char *_path) {
   path = strdup(_path);
 
-  VERBOSE(std::cout << "Opening file " << path << " for appending." << std::endl);
+  std::cout << "Opening file " << path << " for appending." << std::endl;
 
   handle = PHYSFS_openAppend(path);
 
@@ -132,6 +144,12 @@ int File::eof() {
 // Reading
 
 int64_t File::readBytes(char *buffer, uint64_t length) {
+  if (!is_open) {
+    buffer[0] = '\0';
+
+    return 1;
+  }
+
   int64_t status = PHYSFS_readBytes(handle, buffer, length);
   filesystem->checkError("PHYSFS_readBytes", path);
 
@@ -159,6 +177,14 @@ const char *File::read() {
 }
 
 // Byte reading
+
+void File::readS8(PHYSFS_sint8 *value) {
+  readBytes((char *) value, 1);
+}
+
+void File::readU8(PHYSFS_uint8 *value) {
+  readBytes((char *) value, 1);
+}
 
 void File::readSBE16(PHYSFS_sint16 *value) {
   if (!PHYSFS_readSBE16(handle, value)) {

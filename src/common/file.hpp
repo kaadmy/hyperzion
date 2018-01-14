@@ -6,6 +6,8 @@
 #include <physfs.h>
 
 namespace MCommon {
+  char *addExtension(const char *path, const char *ext);
+
   class File {
   private:
     Filesystem *filesystem;
@@ -40,6 +42,8 @@ namespace MCommon {
     int64_t readBytes(char *buffer, uint64_t length);
     const char *read();
 
+    void readS8(PHYSFS_sint8 *value);
+    void readU8(PHYSFS_uint8 *value);
     void readSBE16(PHYSFS_sint16 *value);
     void readUBE16(PHYSFS_uint16 *value);
     void readSBE32(PHYSFS_sint32 *value);

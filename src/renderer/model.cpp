@@ -16,6 +16,8 @@ Model::Model(const char *_name) {
   setPosition(0.0, 0.0, 0.0);
   setAngles(0.0, 0.0, 0.0);
 
+  VERBOSE(std::cout << "Creating VBO..." << std::endl);
+
   // Create shader program
   // ??? Check for an existing program of the same type and state
 
@@ -31,31 +33,106 @@ Model::Model(const char *_name) {
   program->bindShader(GL_FRAGMENT_SHADER, file->read());
   file->close();
 
-  delete file;
-
   program->link();
 
   renderer->addProgram(program);
 
-  // Create material(s) automatically
-  // ??? Check for existing materials of the same type and state
-  // ??? Use model data to load materials
-
-  num_materials = 1;
-  materials[0].material = new MRenderer::Material(program, "textures/null");
-  materials[0].first = 0;
-  materials[0].count = 0;
-
-  renderer->addMaterial(materials[0].material);
-
   // Create VBO
 
-  vbo = new MRenderer::VBO();
+  program->bind();
+
+  vbo = new MRenderer::VBO(GL_STATIC_DRAW);
 
   renderer->addVBO(vbo);
+
+  // Begin loading
+
+  int i;
+  struct {
+    char *data;
+    uint8_t ubyte;
+    uint16_t ushort;
+    uint32_t uint;
+  } buf;
+
+  buf.data = MCommon::addExtension(name, ".hzm");
+  file->openRead(buf.data);
+  free(buf.data);
+
+  buf.data = (char *) malloc(256);
+
+  // Check for a valid header
+
+  file->readBytes(buf.data, 3);
+
+  if (strncmp("HZM", buf.data, 3)) {
+    std::cout << "Incorrect file format, aborting." << std::endl;
+
+    return;
+  }
+
+  file->readU8(&buf.ubyte);
+  num_materials = buf.ubyte;
+
+  file->readUBE16(&buf.ushort);
+  uint16_t num_polygons = buf.ushort;
+  uint32_t num_vertices = num_polygons * 3;
+
+  vbo->setLength(num_vertices); // VBOs take length in vertices
+
+  VERBOSE(std::cout << "Material count: " << num_materials << std::endl);
+  VERBOSE(std::cout << "Polygon count: " << num_polygons << std::endl);
+  VERBOSE(std::cout << "Vertex count: " << num_vertices << std::endl);
+
+  // Create material(s) automatically
+
+  for (i = 0; i < num_materials; i++) {
+    file->readU8(&buf.ubyte);
+    uint8_t namelen = buf.ubyte;
+
+    file->readBytes(buf.data, namelen);
+    buf.data[namelen] = '\0';
+    materials[i].material = new MRenderer::Material(program, buf.data);
+
+    // ??? Check for existing materials of the same type and state
+    renderer->addMaterial(materials[i].material);
+
+    file->readUBE16(&buf.ushort);
+    materials[i].first = buf.ushort;
+
+    file->readUBE16(&buf.ushort);
+    materials[i].count = buf.ushort;
+  }
+
+  // Load the actual polygon soup
+
+  VertexT *vertex;
+
+  for (i = 0; i < num_polygons; i++) {
+    vertex = vbo->getVertex(i);
+
+    vertex->position[AXIS_X] = file->readFBE();
+    vertex->position[AXIS_Y] = file->readFBE();
+    vertex->position[AXIS_Z] = file->readFBE();
+
+    file->readS8(&vertex->normal[AXIS_X]);
+    file->readS8(&vertex->normal[AXIS_Y]);
+    file->readS8(&vertex->normal[AXIS_Z]);
+
+    vertex->texcoord[AXIS_X] = file->readFBE();
+    vertex->texcoord[AXIS_Y] = file->readFBE();
+  }
+
+  // Free references
+
+  free(buf.data);
+
+  delete file;
 }
 
 Model::~Model() {
+  VERBOSE(std::cout << "Deleting VBO..." << std::endl);
+
   free(name);
 }
 
@@ -65,6 +142,7 @@ void Model::draw() {
   int i;
 
   for (i = 0; i < num_materials; i++) {
+    materials[i].material->bind();
     vbo->draw(materials[i].first, materials[i].count);
   }
 }

@@ -62,27 +62,27 @@ void Renderer::deinit() {
   int i;
 
   VERBOSE(std::cout << "Freeing " << num_cameras << " cameras..." << std::endl);
-  for (i = (num_cameras - 1); i > 0; i--) {
+  for (i = 0; i < num_cameras; i++) {
     delete cameras[i];
   }
 
   VERBOSE(std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl);
-  for (i = (num_vbos - 1); i > 0; i--) {
+  for (i = 0; i < num_vbos; i++) {
     delete vbos[i];
   }
 
   VERBOSE(std::cout << "Freeing " << num_materials << " materials..." << std::endl);
-  for (i = (num_materials - 1); i > 0; i--) {
+  for (i = 0; i < num_materials; i++) {
     delete materials[i];
   }
 
   VERBOSE(std::cout << "Freeing " << num_textures << " textures..." << std::endl);
-  for (i = (num_textures - 1); i > 0; i--) {
+  for (i = 0; i < num_textures; i++) {
     delete textures[i];
   }
 
   VERBOSE(std::cout << "Freeing " << num_programs << " programs..." << std::endl);
-  for (i = (num_programs - 1); i > 0; i--) {
+  for (i = 0; i < num_programs; i++) {
     delete programs[i];
   }
 }

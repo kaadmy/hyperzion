@@ -8,9 +8,9 @@
 namespace MRenderer {
   typedef struct {
     GLfloat position[3];
-    GLfloat normal[3];
+    GLbyte normal[3];
     GLfloat texcoord[2];
-  } Vertex_t;
+  } VertexT;
 
   class VBO {
   private:
@@ -18,16 +18,22 @@ namespace MRenderer {
 
     GLuint gl_id;
 
+    GLenum drawmode;
+
     GLsizei length;
-    class Vertex *data;
+    VertexT *data;
   public:
-    VBO();
+    VBO(GLenum _drawmode);
     ~VBO();
 
+    void bindRaw();
     void bind();
 
     void draw(GLint first, GLsizei count);
 
     GLsizei getLength();
+    void setLength(GLsizei _length);
+
+    VertexT *getVertex(GLsizei index);
   };
 }

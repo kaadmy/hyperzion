@@ -1,0 +1,4 @@
+
+material_bind "models/ship/accent2"
+material_parameter texture "models/ship/base.png"
+material_parameter color 0.6 1.0 0.6

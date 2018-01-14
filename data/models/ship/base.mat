@@ -1,0 +1,4 @@
+
+material_bind "models/ship/base"
+material_parameter texture "models/ship/base.png"
+material_parameter color 1.0 1.0 1.0

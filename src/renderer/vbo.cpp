@@ -7,14 +7,16 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 // Constructor/destructor
 
-VBO::VBO() {
+VBO::VBO(GLenum _drawmode) {
   length = 0;
+
+  drawmode = _drawmode;
 
   glGenBuffers(1, &gl_id);
 
-  bind();
+  bindRaw();
 
-  glBufferData(GL_ARRAY_BUFFER, length, data, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, length, data, drawmode);
 }
 
 VBO::~VBO() {
@@ -23,10 +25,16 @@ VBO::~VBO() {
 
 // Binding
 
-void VBO::bind() {
+void VBO::bindRaw() {
   glBindBuffer(GL_ARRAY_BUFFER, gl_id);
+}
 
-  static const GLsizei stride = sizeof(GLfloat) * 8;
+void VBO::bind() {
+  // A valid program must be bound before this call
+
+  bindRaw();
+
+  static const GLsizei stride = (sizeof(GLfloat) * 5) + (sizeof(GLbyte) * 2);
 
   GLint attrib_position = glGetAttribLocation(gl_id, "v_position");
   glEnableVertexAttribArray(attrib_position);
@@ -34,18 +42,20 @@ void VBO::bind() {
 
   GLint attrib_normal = glGetAttribLocation(gl_id, "v_normal");
   glEnableVertexAttribArray(attrib_normal);
-  glVertexAttribPointer(attrib_normal, 3, GL_FLOAT, GL_FALSE, stride, (void *) (sizeof(GLfloat) * 3));
+  glVertexAttribPointer(attrib_normal, 3, GL_BYTE, GL_FALSE, stride, (void *) (sizeof(GLfloat) * 3));
 
   GLint attrib_texcoord = glGetAttribLocation(gl_id, "v_texcoord");
   glEnableVertexAttribArray(attrib_texcoord);
-  glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, stride, (void *) (sizeof(GLfloat) * 6));
+  glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, stride, (void *) ((sizeof(GLfloat) * 6) + (sizeof(GLbyte) * 2)));
 }
 
 // Drawing
 
 void VBO::draw(GLint first, GLsizei count) {
+  // A valid program must be bound before this call
+
   if ((first + count) > length) {
-    std::cout << "VBO draw range out of bounds (" << (first + count) << " > " << length<< "), skipping." << std::endl;
+    std::cout << "VBO draw range out of bounds (" << (first + count) << " > " << length << "), skipping." << std::endl;
 
     return;
   }
@@ -55,8 +65,30 @@ void VBO::draw(GLint first, GLsizei count) {
   glDrawArrays(GL_TRIANGLES, first, count);
 }
 
-// Length getter
+// Length
 
 GLsizei VBO::getLength() {
   return length;
+}
+
+void VBO::setLength(GLsizei _length) {
+  length = _length;
+
+  data = (VertexT *) realloc(data, length * sizeof(VertexT));
+
+  bind();
+
+  glBufferData(GL_ARRAY_BUFFER, length, data, drawmode);
+}
+
+// Single vertex data
+
+VertexT *VBO::getVertex(GLsizei index) {
+  if (index >= length) {
+    std::cout << "VBO vertex fetch out of bounds (" << index << " > " << length << "), skipping." << std::endl;
+
+    return (VertexT *) &data[0];
+  }
+
+  return (VertexT *) &data[index];
 }

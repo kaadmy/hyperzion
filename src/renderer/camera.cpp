@@ -18,6 +18,13 @@ Camera::~Camera() {
 // Binding
 
 void Camera::bind() {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  gluPerspective();
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 }
 
 // FOV

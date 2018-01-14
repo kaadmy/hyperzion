@@ -87,6 +87,12 @@ void Renderer::deinit() {
   }
 }
 
+// Viewport/camera
+
+void Renderer::viewport(GLint width, GLint height) {
+  glViewport(0, 0, width, height);
+}
+
 // Drawing
 
 void Renderer::preDraw() {

@@ -41,6 +41,8 @@ namespace MRenderer {
 
     void deinit();
 
+    void viewport(GLint width, GLint height);
+
     void preDraw();
     void draw();
     void postDraw();

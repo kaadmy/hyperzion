@@ -76,8 +76,14 @@ void Client::deinit() {
 void Client::main() {
   exit = false; // Reset loop condition when entering the main loop
 
+  int32_t width;
+  int32_t height;
+
   while (!exit) {
     event->update();
+
+    glfwGetFramebufferSize(window, &width, &height);
+    renderer->viewport(width, height);
 
     game->update();
 

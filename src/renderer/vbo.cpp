@@ -48,7 +48,7 @@ void VBO::bind() {
 
   GLint attrib_texcoord = glGetAttribLocation(gl_id, "v_texcoord");
   glEnableVertexAttribArray(attrib_texcoord);
-  glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, stride, (void *) ((sizeof(GLfloat) * 6) + (sizeof(GLbyte) * 2)));
+  glVertexAttribPointer(attrib_texcoord, 2, GL_FLOAT, GL_FALSE, stride, (void *) ((sizeof(GLfloat) * 3) + (sizeof(GLbyte) * 3)));
 }
 
 // Drawing

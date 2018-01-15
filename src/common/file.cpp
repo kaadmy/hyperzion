@@ -225,9 +225,25 @@ void File::readUBE64(PHYSFS_uint64 *value) {
 }
 
 float File::readFBE() {
-  PHYSFS_uint32 value;
+  PHYSFS_uint8 b0;
+  PHYSFS_uint8 b1;
+  PHYSFS_uint8 b2;
+  PHYSFS_uint8 b3;
 
-  readUBE32(&value);
+  readU8(&b0);
+  readU8(&b1);
+  readU8(&b2);
+  readU8(&b3);
 
-  return (float) value;
+  bool sign = (b0 & 0x80) ? true : false;
+
+  int exponent = ((b0 & ~0x80) << 1 | ((b1 & 0x80) >> 7)) - 126;
+  int mantissa = ((b1 & ~0x80) << 16) | (b2 << 8) | b3;
+
+  mantissa += 0x800000;
+  if(sign) {
+    mantissa = -mantissa;
+  }
+
+  return ldexpf(((float) mantissa) / 0x1000000, exponent);
 }

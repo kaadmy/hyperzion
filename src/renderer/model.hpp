@@ -8,10 +8,10 @@
 #include "shared.hpp"
 
 namespace MRenderer {
+  const int MAX_MODEL_MATERIALS = 256;
+
   class Model {
   private:
-    int ident;
-
     class Renderer *renderer;
 
     char *name;
@@ -24,7 +24,7 @@ namespace MRenderer {
       class Material *material;
       GLint first;
       GLsizei count;
-    } materials[MAX_MATERIALS];
+    } materials[MAX_MODEL_MATERIALS];
 
     class VBO *vbo;
   public:
@@ -38,5 +38,7 @@ namespace MRenderer {
 
     void setAngles(GLfloat x, GLfloat y, GLfloat z);
     void getAngles(GLfloat *x, GLfloat *y, GLfloat *z);
+
+    int ident;
   };
 }

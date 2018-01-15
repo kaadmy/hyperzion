@@ -14,8 +14,6 @@ namespace MRenderer {
 
   class VBO {
   private:
-    int ident;
-
     GLuint gl_id;
 
     GLenum drawmode;
@@ -35,5 +33,7 @@ namespace MRenderer {
     void setLength(GLsizei _length);
 
     VertexT *getVertex(GLsizei index);
+
+    int ident;
   };
 }

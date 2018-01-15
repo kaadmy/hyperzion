@@ -8,8 +8,6 @@
 namespace MRenderer {
   class Texture {
   private:
-    int ident;
-
     char *path;
 
     uint8_t *pixeldata;
@@ -30,5 +28,7 @@ namespace MRenderer {
 
     void load();
     void applyParameters();
+
+    int ident;
   };
 }

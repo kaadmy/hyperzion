@@ -98,10 +98,10 @@ Model::Model(const char *_name) {
     renderer->addMaterial(materials[i].material);
 
     file->readUBE16(&buf.ushort);
-    materials[i].first = buf.ushort;
+    materials[i].first = buf.ushort * 3; // Vertices, not triangles
 
     file->readUBE16(&buf.ushort);
-    materials[i].count = buf.ushort;
+    materials[i].count = buf.ushort * 3; // Vertices, not triangles
   }
 
   // Load the actual polygon soup
@@ -139,12 +139,22 @@ Model::~Model() {
 // Drawing
 
 void Model::draw() {
+  glPushMatrix();
+
+  glRotatef(angles[AXIS_Z], 0, 0, 1);
+  glRotatef(angles[AXIS_X], 1, 0, 0);
+  glRotatef(angles[AXIS_Y], 0, 1, 0);
+
+  glTranslatef(position[AXIS_X], position[AXIS_Y], position[AXIS_Z]);
+
   int i;
 
   for (i = 0; i < num_materials; i++) {
     materials[i].material->bind();
     vbo->draw(materials[i].first, materials[i].count);
   }
+
+  glPopMatrix();
 }
 
 // Position

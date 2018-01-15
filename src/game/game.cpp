@@ -34,6 +34,8 @@ Game::Game() {
   camera_3d->setFOV(70);
   camera_3d->setAspect(1.0);
 
+  camera_3d->setClip(0.1, 50.0);
+
   renderer->addCamera(camera_3d);
   renderer->setActiveCamera(camera_3d);
 }
@@ -77,10 +79,6 @@ void Game::update() {
   }
 
   // 3D Rendering
-
-  for (i = 0; i < num_ships; i++) {
-    ships[i]->draw();
-  }
 
   renderer->draw();
 

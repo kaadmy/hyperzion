@@ -30,18 +30,17 @@ void Camera::bind() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  GLfloat x;
-  GLfloat y;
+  // Perspective
 
-  y = clip_near * tanf((fov * M_PI) / 360);
-  x = y / aspect;
+  GLfloat y = clip_near * tanf((fov * M_PI) / 360);
+  GLfloat x = y / aspect;
 
-  glFrustum(-x * scale, x * scale, y * scale, -y * scale, clip_near * scale, clip_far * scale);
+  glFrustum(-x * scale, x * scale, -y * scale, y * scale, clip_near * scale, clip_far * scale);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  glRotatef(90.0, 1, 0, 0); // Switch +Z up, +Y forward
+  // Transform for camera coordinates
 
   glRotatef(-angles[AXIS_Z], 0, 0, 1);
   glRotatef(-angles[AXIS_X], 1, 0, 0);

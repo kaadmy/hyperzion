@@ -2,6 +2,7 @@
 #pragma once
 
 #include "renderer/model.hpp"
+#include "renderer/renderer.hpp"
 #include "shared.hpp"
 
 namespace MGame {
@@ -10,13 +11,13 @@ namespace MGame {
     float distance;
     float rotation;
 
+    MRenderer::Renderer *renderer;
+
     MRenderer::Model *model;
   public:
     Ship();
     ~Ship();
 
     void update();
-
-    void draw();
   };
 }

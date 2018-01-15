@@ -7,8 +7,6 @@
 namespace MRenderer {
   class Program {
   private:
-    int ident;
-
     GLuint gl_id;
   public:
     Program();
@@ -18,5 +16,7 @@ namespace MRenderer {
 
     void bindShader(GLenum type, const char *source);
     void link();
+
+    int ident;
   };
 }

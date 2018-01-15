@@ -7,8 +7,6 @@
 namespace MRenderer {
   class Camera {
   private:
-    int ident;
-
     bool ortho;
 
     GLfloat fov; // Y-axis FOV
@@ -43,5 +41,7 @@ namespace MRenderer {
 
     void setAngles(GLfloat x, GLfloat y, GLfloat z);
     void getAngles(GLfloat *x, GLfloat *y, GLfloat *z);
+
+    int ident;
   };
 }

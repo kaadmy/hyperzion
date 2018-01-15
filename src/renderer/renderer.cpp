@@ -35,13 +35,14 @@ Renderer::Renderer() {
   num_textures = 0;
   num_materials = 0;
   num_vbos = 0;
+  num_models = 0;
   num_cameras = 0;
 
   setActiveCamera(NULL);
 
   // OpenGL state
 
-  glClearColor(0.8, 0.8, 0.8, 1.0);
+  glClearColor(0.1, 0.1, 0.1, 1.0);
 
   glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
@@ -67,27 +68,44 @@ void Renderer::deinit() {
 
   VERBOSE(std::cout << "Freeing " << num_cameras << " cameras..." << std::endl);
   for (i = 0; i < num_cameras; i++) {
-    delete cameras[i];
+    if (cameras[i] != NULL) {
+      delete cameras[i];
+    }
+  }
+
+  VERBOSE(std::cout << "Freeing " << num_models << " models..." << std::endl);
+  for (i = 0; i < num_models; i++) {
+    if (models[i] != NULL) {
+      delete models[i];
+    }
   }
 
   VERBOSE(std::cout << "Freeing " << num_vbos << " VBOs..." << std::endl);
   for (i = 0; i < num_vbos; i++) {
-    delete vbos[i];
+    if (vbos[i] != NULL) {
+      delete vbos[i];
+    }
   }
 
   VERBOSE(std::cout << "Freeing " << num_materials << " materials..." << std::endl);
   for (i = 0; i < num_materials; i++) {
-    delete materials[i];
+    if (materials[i] != NULL) {
+      delete materials[i];
+    }
   }
 
   VERBOSE(std::cout << "Freeing " << num_textures << " textures..." << std::endl);
   for (i = 0; i < num_textures; i++) {
-    delete textures[i];
+    if (textures[i] != NULL) {
+      delete textures[i];
+    }
   }
 
   VERBOSE(std::cout << "Freeing " << num_programs << " programs..." << std::endl);
   for (i = 0; i < num_programs; i++) {
-    delete programs[i];
+    if (programs[i] != NULL) {
+      removeProgram(programs[i]);
+    }
   }
 }
 
@@ -97,11 +115,16 @@ void Renderer::viewport(GLint width, GLint height) {
   glViewport(0, 0, width, height);
 }
 
+// Camera
+
+void Renderer::setActiveCamera(Camera *camera) {
+  active_camera = camera;
+}
+
 // Drawing
 
 void Renderer::preDraw() {
-  glClear(GL_COLOR_BUFFER_BIT);
-  //glClear(GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   if (active_camera != NULL) {
     active_camera->bind();
@@ -115,6 +138,11 @@ void Renderer::preDraw() {
 }
 
 void Renderer::draw() {
+  int i;
+
+  for (i = 0; i < num_models; i++) {
+    models[i]->draw();
+  }
 }
 
 void Renderer::postDraw() {
@@ -128,6 +156,8 @@ int Renderer::addProgram(Program *program) {
 
   VERBOSE(std::cout << "Adding program ID " << index << " to renderer..." << std::endl);
 
+  program->ident = index;
+
   programs[index] = program;
 
   return index;
@@ -138,6 +168,8 @@ int Renderer::addTexture(Texture *texture) {
   num_textures++;
 
   VERBOSE(std::cout << "Adding texture ID " << index << " to renderer..." << std::endl);
+
+  texture->ident = index;
 
   textures[index] = texture;
 
@@ -150,6 +182,8 @@ int Renderer::addMaterial(Material *material) {
 
   VERBOSE(std::cout << "Adding material ID " << index << " to renderer..." << std::endl);
 
+  material->ident = index;
+
   materials[index] = material;
 
   return index;
@@ -161,7 +195,22 @@ int Renderer::addVBO(VBO *vbo) {
 
   VERBOSE(std::cout << "Adding VBO ID " << index << " to renderer..." << std::endl);
 
+  vbo->ident = index;
+
   vbos[index] = vbo;
+
+  return index;
+}
+
+int Renderer::addModel(Model *model) {
+  int index = num_models;
+  num_models++;
+
+  VERBOSE(std::cout << "Adding model ID " << index << " to renderer..." << std::endl);
+
+  model->ident = index;
+
+  models[index] = model;
 
   return index;
 }
@@ -172,13 +221,95 @@ int Renderer::addCamera(Camera *camera) {
 
   VERBOSE(std::cout << "Adding camera ID " << index << " to renderer..." << std::endl);
 
+  camera->ident = index;
+
   cameras[index] = camera;
 
   return index;
 }
 
-// Camera
+// Removing state
 
-void Renderer::setActiveCamera(Camera *camera) {
-  active_camera = camera;
+void Renderer::removeProgram(Program *program) {
+  int index = program->ident;
+
+  if (index == (num_programs - 1)) {
+    num_programs = index;
+  }
+
+  VERBOSE(std::cout << "Removing program ID " << index << " from renderer..." << std::endl);
+
+  delete program;
+
+  programs[index] = NULL;
+}
+
+void Renderer::removeTexture(Texture *texture) {
+  int index = texture->ident;
+
+  if (index == (num_textures - 1)) {
+    num_textures = index;
+  }
+
+  VERBOSE(std::cout << "Removing texture ID " << index << " from renderer..." << std::endl);
+
+  delete texture;
+
+  textures[index] = NULL;
+}
+
+void Renderer::removeMaterial(Material *material) {
+  int index = material->ident;
+
+  if (index == (num_materials - 1)) {
+    num_materials = index;
+  }
+
+  VERBOSE(std::cout << "Removing material ID " << index << " from renderer..." << std::endl);
+
+  delete material;
+
+  materials[index] = NULL;
+}
+
+void Renderer::removeVBO(VBO *vbo) {
+  int index = vbo->ident;
+
+  if (index == (num_vbos - 1)) {
+    num_vbos = index;
+  }
+
+  VERBOSE(std::cout << "Removing VBO ID " << index << " from renderer..." << std::endl);
+
+  delete vbo;
+
+  vbos[index] = NULL;
+}
+
+void Renderer::removeModel(Model *model) {
+  int index = model->ident;
+
+  if (index == (num_models - 1)) {
+    num_models = index;
+  }
+
+  VERBOSE(std::cout << "Removing model ID " << index << " from renderer..." << std::endl);
+
+  delete model;
+
+  models[index] = NULL;
+}
+
+void Renderer::removeCamera(Camera *camera) {
+  int index = camera->ident;
+
+  if (index == (num_cameras - 1)) {
+    num_cameras = index;
+  }
+
+  VERBOSE(std::cout << "Removing camera ID " << index << " from renderer..." << std::endl);
+
+  delete camera;
+
+  cameras[index] = NULL;
 }

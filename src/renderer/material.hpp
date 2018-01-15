@@ -8,8 +8,6 @@
 namespace MRenderer {
   class Material {
   private:
-    int ident;
-
     char *name;
 
     class Program *program;
@@ -30,5 +28,7 @@ namespace MRenderer {
     ~Material();
 
     void bind();
+
+    int ident;
   };
 }

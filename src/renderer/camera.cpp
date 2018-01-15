@@ -10,6 +10,15 @@ using namespace MRenderer; // Make this module's namespace local for convenience
 
 Camera::Camera(bool _ortho) {
   ortho = _ortho;
+
+  setFOV(60.0);
+  setAspect(1.0);
+  setScale(1.0);
+
+  setClip(0.1, 10.0);
+
+  setPosition(0.0, 0.0, 0.0);
+  setAngles(0.0, 0.0, 0.0);
 }
 
 Camera::~Camera() {
@@ -21,10 +30,24 @@ void Camera::bind() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  gluPerspective();
+  GLfloat x;
+  GLfloat y;
+
+  y = clip_near * tanf((fov * M_PI) / 360);
+  x = y / aspect;
+
+  glFrustum(-x * scale, x * scale, y * scale, -y * scale, clip_near * scale, clip_far * scale);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  glRotatef(90.0, 1, 0, 0); // Switch +Z up, +Y forward
+
+  glRotatef(-angles[AXIS_Z], 0, 0, 1);
+  glRotatef(-angles[AXIS_X], 1, 0, 0);
+  glRotatef(-angles[AXIS_Y], 0, 1, 0);
+
+  glTranslatef(-position[AXIS_X], -position[AXIS_Y], -position[AXIS_Z]);
 }
 
 // FOV
@@ -45,6 +68,23 @@ void Camera::setAspect(GLfloat _aspect) {
 
 GLfloat Camera::getAspect() {
   return aspect;
+}
+
+// Scale
+
+void Camera::setScale(GLfloat _scale) {
+  scale = _scale;
+}
+
+GLfloat Camera::getScale() {
+  return scale;
+}
+
+// Clip
+
+void Camera::setClip(GLfloat near, GLfloat far) {
+  clip_near = near;
+  clip_far = far;
 }
 
 // Position

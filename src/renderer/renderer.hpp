@@ -34,6 +34,8 @@ namespace MRenderer {
     class Material *materials[MAX_MATERIALS];
     class VBO *vbos[MAX_VBOS];
     class Camera *cameras[MAX_CAMERAS];
+
+    class Camera *active_camera;
   public:
     ~Renderer();
 
@@ -52,5 +54,7 @@ namespace MRenderer {
     int addMaterial(Material *material);
     int addVBO(VBO *vbo);
     int addCamera(Camera *camera);
+
+    void setActiveCamera(Camera *camera);
   };
 }

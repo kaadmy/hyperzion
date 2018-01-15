@@ -12,15 +12,17 @@ VBO::VBO(GLenum _drawmode) {
 
   drawmode = _drawmode;
 
+  data = NULL;
+
   glGenBuffers(1, &gl_id);
 
-  bindRaw();
-
-  glBufferData(GL_ARRAY_BUFFER, length, data, drawmode);
+  setLength(length);
 }
 
 VBO::~VBO() {
   glDeleteBuffers(1, &gl_id);
+
+  free(data);
 }
 
 // Binding
@@ -74,9 +76,13 @@ GLsizei VBO::getLength() {
 void VBO::setLength(GLsizei _length) {
   length = _length;
 
-  data = (VertexT *) realloc(data, length * sizeof(VertexT));
+  if (data == NULL) {
+    data = (VertexT *) realloc(data, length * sizeof(VertexT));
+  } else {
+    data = (VertexT *) malloc(length * sizeof(VertexT));
+  }
 
-  bind();
+  bindRaw();
 
   glBufferData(GL_ARRAY_BUFFER, length, data, drawmode);
 }

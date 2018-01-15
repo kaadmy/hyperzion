@@ -32,8 +32,12 @@ Renderer::Renderer() {
   // Reset singleton state
 
   num_programs = 0;
+  num_textures = 0;
   num_materials = 0;
   num_vbos = 0;
+  num_cameras = 0;
+
+  setActiveCamera(NULL);
 
   // OpenGL state
 
@@ -98,6 +102,16 @@ void Renderer::viewport(GLint width, GLint height) {
 void Renderer::preDraw() {
   glClear(GL_COLOR_BUFFER_BIT);
   //glClear(GL_DEPTH_BUFFER_BIT);
+
+  if (active_camera != NULL) {
+    active_camera->bind();
+  } else { // The camera resets matrix  state if available
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+  }
 }
 
 void Renderer::draw() {
@@ -161,4 +175,10 @@ int Renderer::addCamera(Camera *camera) {
   cameras[index] = camera;
 
   return index;
+}
+
+// Camera
+
+void Renderer::setActiveCamera(Camera *camera) {
+  active_camera = camera;
 }

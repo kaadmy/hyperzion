@@ -165,11 +165,13 @@ const char *File::read() {
 
   length(); // This sets filelength automatically
 
-  filedata = (char *) malloc(filelength);
+
+  filedata = (char *) malloc(filelength + 1); // NUL
 
   readBytes(filedata, filelength);
 
   filedata[filelength] = '\0'; // ?? Ensure a NUL, is this required?
+
 
   //std::cout << filedata << std::endl;
 

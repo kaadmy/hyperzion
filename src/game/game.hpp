@@ -21,6 +21,9 @@ namespace MGame {
 
     int num_ships;
     class Ship *ships[MAX_SHIPS];
+
+    MRenderer::Camera *camera_2d;
+    MRenderer::Camera *camera_3d;
   public:
     ~Game();
 

@@ -1,7 +1,24 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(hyperzion CXX)
+# Create configuration variables
+
+set(CONFIG_ORG_NAME "kaadmy")
+
+set(CONFIG_GAME_NAME "hyperzion")
+set(CONFIG_GAME_TITLE "Hyperzion")
+
+set(CONFIG_VERSION_MAJOR 0)
+set(CONFIG_VERSION_MINOR 1)
+set(CONFIG_VERSION_PATCH 0)
+
+set(CONFIG_VERSION_STRING "${CONFIG_VERSION_MAJOR}.${CONFIG_VERSION_MINOR}.${CONFIG_VERSION_PATCH}")
+
+set(CONFIG_PATH_DATA "data")
+
+# Project declaration
+
+project(${CONFIG_GAME_NAME} CXX)
 
 # Disable common warnings
 
@@ -37,20 +54,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} ${DEBUG_FLAGS}")
 
-# Generate config variables
-
-set(CONFIG_ORG_NAME "kaadmy")
-
-set(CONFIG_GAME_NAME "hyperzion")
-set(CONFIG_GAME_TITLE "Hyperzion")
-
-set(CONFIG_VERSION_MAJOR 0)
-set(CONFIG_VERSION_MINOR 1)
-set(CONFIG_VERSION_PATCH 0)
-
-set(CONFIG_VERSION_STRING "${CONFIG_VERSION_MAJOR}.${CONFIG_VERSION_MINOR}.${CONFIG_VERSION_PATCH}")
-
-set(CONFIG_PATH_DATA "data")
+# Generate config file
 
 configure_file(
   "${hyperzion_SOURCE_DIR}/src/config.h.in"
@@ -60,9 +64,9 @@ configure_file(
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
-find_package(GLFW)
-find_package(OpenGL)
-find_package(PhysFS)
+include(FindGLFW)
+include(FindOpenGL)
+include(FindPhysFS)
 
 # Local shared includes
 

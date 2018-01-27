@@ -83,6 +83,7 @@ void Client::main() {
     event->update();
 
     glfwGetFramebufferSize(window, &width, &height);
+
     renderer->viewport(width, height);
 
     game->update();

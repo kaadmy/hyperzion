@@ -30,12 +30,7 @@ void Camera::bind() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  // Perspective
-
-  GLfloat y = clip_near * tanf((fov * M_PI) / 360);
-  GLfloat x = y / aspect;
-
-  glFrustum(-x * scale, x * scale, -y * scale, y * scale, clip_near * scale, clip_far * scale);
+  gluPerspective(fov, aspect, clip_near, clip_far);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

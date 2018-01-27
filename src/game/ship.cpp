@@ -18,7 +18,7 @@ Ship::Ship() {
 
   model = new MRenderer::Model("models/ship/base");
 
-  model->setPosition(0.0, 0.0, 5.0);
+  model->setPosition(0.0, 0.0, -8.0);
 
   renderer->addModel(model);
 }

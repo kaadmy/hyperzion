@@ -3,6 +3,7 @@
 
 #include "camera.hpp"
 #include "glad.h"
+#include <GL/glu.h>
 #include "material.hpp"
 #include "model.hpp"
 #include "program.hpp"

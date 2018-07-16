@@ -38,6 +38,14 @@ void VBO::bind() {
 
   static const GLsizei stride = (sizeof(GLfloat) * 5) + (sizeof(GLbyte) * 2);
 
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_NORMAL_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+  glVertexPointer(3, GL_FLOAT, stride, (void *) offsetof(VertexT, position));
+  glNormalPointer(GL_FLOAT, stride, (void *) offsetof(VertexT, normal));
+  glTexCoordPointer(2, GL_BYTE, stride, (void *) offsetof(VertexT, texcoord));
+
   GLint attrib_position = glGetAttribLocation(gl_id, "v_position");
   glEnableVertexAttribArray(attrib_position);
   glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, stride, (void *) 0);
